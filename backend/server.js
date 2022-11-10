@@ -8,7 +8,8 @@ let port = process.env.PORT || 5000
 connectDB()
 
 let app = express()
-
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 app.use('/', invoiceRoutes)
 
 app.listen(port, (error)=>{
