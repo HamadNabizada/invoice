@@ -1,13 +1,12 @@
 .navContainer{
     background-color:#20243c;
-    width:50px;
     /* height:100vh; */
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
     display:flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
+    min-width: 100px;
 }
 .logoContainer{
     border-top-right-radius: 25px;
@@ -26,7 +25,6 @@
 }
 .logo{
     width: 50%;
-    /* height:50%; */
 }
 .middleNav{
     width: 100%;
@@ -45,7 +43,6 @@
 .theme{
     padding: 2px;
     width: 25px;
-    /* height: 40%; */
     cursor: pointer;
 }
 .userIconContainer{
@@ -55,6 +52,7 @@
     justify-content: center;
     width:100%;
     min-height: 80px;
+    aspect-ratio: 1/1;
     margin-top:auto;
     border-bottom-right-radius: 25px;
     box-shadow: 0 -1px 2px #8b8cb1;
@@ -64,4 +62,49 @@
     border-radius: 50%;
     width: 35px;
     aspect-ratio: 1/1;
+}
+
+@media screen and (max-width:800px){
+    .navContainer{
+        flex-direction: row;
+        height:70px;
+        width:100%;
+        border-radius: 0px;
+        overflow: hidden;
+    }
+    .logoContainer{
+        border: 1px solid red;
+        width: 6rem;
+        min-width: 4rem;
+        height: 100%;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+    .logo{
+        width: 35%;
+    }
+    .middleNav{
+        flex-direction: row-reverse;
+        padding-bottom: 0;
+        min-width:0px;
+    }
+    .themeContainer{
+        flex-direction: row-reverse;
+        align-items: center;
+    }
+    .theme{
+        padding:0;
+        width: 20px;
+        cursor: pointer;
+        padding-right: 1rem;
+    }
+    .userIconContainer{
+        flex-direction: row;
+        height: 100%;
+        border-bottom-right-radius: 0px;
+        box-shadow: -1px 0px 1px #8b8cb1;
+        min-height: 0px;
+        justify-content: center;
+        width: 90px;
+    }
 }
