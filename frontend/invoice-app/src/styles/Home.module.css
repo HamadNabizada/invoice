@@ -41,6 +41,42 @@
     align-items: center;
     gap: 2rem;
 }
+.newInvoice{
+    gap:1rem;
+    padding: .5rem .7rem .5rem .7rem;
+    border-radius: 20px;
+    background-color:#7b5ef6;
+    display:flex;
+    flex-direction: row;
+    color:white;
+    margin:0px;
+    cursor: pointer;
+}
+.newInvoice:hover{
+    background-color: #6c53db;
+    transition: all .25s;
+}
+.newInvoicePlusBtn{
+    background-color:white;
+    color:#7b5ef6;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight:bold;
+    justify-content: center;
+    margin:0px;
+
+}
+.newInvoiceText{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin:0px;
+}
 .invoices{
     display:flex;
     flex-direction: column;
@@ -57,25 +93,96 @@
     justify-content: space-between;
     font-weight:normal;
     margin:0px;
+    cursor: pointer;
+}
+.invoice>*{
+    padding-right: .7rem;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .invoiceID{
     font-weight:bold;
+    width:15%;
+    overflow-wrap:break-word;
+    inline-size: 15%;
 }
 .invoiceDue{
-
+    width:20%;
+    overflow-wrap:break-word;
+    inline-size: 20%;
 }
 .invoiceOwner{
-
+    width:20%;
+    overflow-wrap:break-word;
+    inline-size: 20%;
 }
 .invoiceCost{
     font-weight:bold;
+    width:20%;
+    font-size: 1.2rem;
 }
 .invoiceStatus{
-
+    color: rgba(63,199,161,255);
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: rgba(63,199,161,.4);
+    align-items: center;
+    height: 3rem;
+    width: 6rem;
+    margin-right: 1rem;
+    padding-left: .3rem;
+}
+.rightArrow{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:0px;
+    margin:0px;
+    font-size: 2rem;
 }
 
 @media screen and (max-width:800px){
     .layoutContainer{
         flex-direction: column;
     }
+}
+@media screen and (max-width: 700px){
+    .header,.invoices{
+        min-width:300px;
+        width:92vw;
+    }
+    .invoice{
+        display:grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 33% 33% 33%;
+    }
+    .invoice>p{
+        margin:.2rem;
+        width:auto;
+        padding:.1rem;
+        overflow-wrap:break-word;
+        inline-size: 90%;
+    }
+    .invoiceOwner{
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        justify-content: flex-start;
+    }
+    .invoiceStatus{
+        grid-column-start: 2;
+        grid-row-start: 3;
+        grid-row-end:4;
+        height: 2rem;
+        width:auto;
+    }
+    .invoiceCost{
+        grid-column-start: 1;
+    }
+    .rightArrow{
+        display:none;
+    }
+
 }

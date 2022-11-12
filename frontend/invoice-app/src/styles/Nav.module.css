@@ -21,6 +21,7 @@
 .logoContainer:hover{
     cursor: pointer;
     background-color:#6850d3;
+    transition: all .25s;
 }
 .logo{
     width: 50%;
@@ -72,7 +73,6 @@
         overflow: hidden;
     }
     .logoContainer{
-        border: 1px solid red;
         width: 6rem;
         min-width: 4rem;
         height: 100%;
