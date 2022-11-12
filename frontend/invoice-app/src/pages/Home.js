@@ -3,6 +3,7 @@ import style from '../styles/Home.module.css'
 import {useState} from 'react'
 import light from '../assets/light.svg'
 import dark from '../assets/dark.svg'
+import NewInvoiceModal from '../components/NewInvoiceModal'
 
 export default function Home(){
 
@@ -27,6 +28,7 @@ export default function Home(){
     }
     let currentTheme = lightMode ? lightTheme : darkTheme
     let styleTheme = {
+        lightTheme: lightMode,
         layout:{
             backgroundColor: currentTheme.bgColor
         },
@@ -48,6 +50,9 @@ export default function Home(){
              handleClick={toggleTheme}
              theme = {theme}
             />
+            <NewInvoiceModal 
+                let theme = {styleTheme}
+            />
             <main style={styleTheme.main}  className={style.mainHome}>
                 <section className={style.header}>
                     <div className={style.title}>
@@ -55,14 +60,15 @@ export default function Home(){
                         <h3 style={styleTheme.minorText} className={style.invoiceSubTitle}>There are 4 total invoices</h3>
                     </div>
                     <div className={style.newInvoiceAndFilterContainer}>
-                        {/* <div className={style.filterContainer}>
-                            <label for='filterSelection' className={style.filterLabel}>Filter by: </label>
-                            <select name="filter" id="filterSelection">
-                                <option value="status">Status</option>
-                                <option value="status">Status</option>
-                                <option value="status">Status</option>
+                        <div className={style.filterContainer}>
+                            <label htmlFor='filterSelection' className={style.filterLabel}>Filter by: </label>
+                            <select className={style.filterSelect} name="filterSelection" id="filterSelection">
+                                <option value="all">All</option>
+                                <option value="draft">Draft</option>
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
                             </select>
-                        </div> */}
+                        </div>
                         <div className={style.newInvoice}>
                             {/* <p className={style.newInvoicePlusBtn}>+</p> */}
                             <p className={style.newInvoiceText}>New Invoice</p>

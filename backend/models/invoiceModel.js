@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 let invoiceSchema = mongoose.Schema({
+    "invoiceID": String,
     "billFrom": {
         'street': String,
         'city':String,
