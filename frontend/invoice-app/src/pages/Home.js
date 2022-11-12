@@ -44,6 +44,8 @@ export default function Home(){
             boxShadow: currentTheme.shadow
         }
     }
+    document.body.style.backgroundColor = styleTheme.layout.backgroundColor
+
     return(
         <div style={styleTheme.layout} className={style.layoutContainer}>
             <Nav 

@@ -1,47 +1,195 @@
 .newInvoiceModalContainer{
     display:flex;
     flex-direction: column;
-    border: 3px solid red;
-    width:40%;
     position:absolute;
+    width:40vw;
+    max-width: 45rem;
+    min-width:40rem;
     left:70px;
+    padding: 2rem;
+    gap:.5rem;
+    border: 1px solid red;
+}
+h4,h5{
+    margin:0px;
+    padding:0px;
+    color:#4d4197;
+    font-size:1rem;
+}
+h3{
+    margin:0px;
+    padding:0px;
+    font-size:1.3rem;
+}
+.newInvoiceForm{
+    display:flex;
+    flex-direction: column;
+    gap: .4rem;
 }
 .billFromContainer{
+    padding-top: .7rem;
     display: flex;
     flex-direction: column;
+    gap:.5rem;
 }
 input{
+    outline: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
     border:none;
+    min-width: 5rem;
+    max-width: 25rem;
+    padding: .5rem;
+    border-radius: 6px;
+    font-size:1rem;
 }
 .labelInputPair{
     display:flex;
     flex-direction: column;
+    gap:.4rem;
 }
 .cityContainer{
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:1rem;
+}
+.cityContainer>.labelInputPair>input{
+    max-width: 13rem;
 }
 .billToContainer{
+    padding-top: .7rem;
     display: flex;
     flex-direction: column;
+    gap:1rem;
 }
 .invoiceDateAndTerm{
     display:flex;
     flex-direction: row;
+    justify-content: space-between;
+    gap:2rem;
+}
+.invoiceDateAndTerm>.labelInputPair{
+    width:40%;
+}
+.invoiceDateAndTerm>.labelInputPair>label{
+    pointer-events: none;
+}
+.invoiceDateAndTerm>.labelInputPair>input{
+    pointer-events: none;
+}
+.invoiceDateAndTerm>.labelInputPair>select{
+    outline: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    border:none;
+    min-width: 5rem;
+    max-width: 25rem;
+    padding: .5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+option{
+    font-size: 1rem;
 }
 .itemListContainer{
     display:flex;
     flex-direction: column;
 }
 .itemListColDesc{
-    display:flex;
-    flex-direction: row;
+    display:grid;
+    grid-template-columns: 40% 10% 20% 20% 5%;
+    justify-content: space-between;
 }
 .singleItemLine{
-    display: flex;
-    flex-direction: row;
+    display:grid;
+    grid-template-columns: 40% 10% 20% 20% 5%;
+    justify-content: space-between;
 }
+.singleItemLine>input{
+    max-height:1rem;
+    padding:.6rem;
+    min-width:auto;
+    max-width:auto;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+}
+.itemTextStyle{
+    text-align: center;
+}
+.itemTextPrice,.trashIcon{
+    height: 100%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:0px;
+    margin:0px;
+}
+.trashIcon{
+    align-items: flex-start;
+}
+.trashIcon>img{
+    height:1.2rem;
+    cursor: pointer;
+}
+.trashIcon>img:hover{
+    opacity: .7;
+    transition: all .2s;
+}
+
+.addNewItemBtn{
+    font-weight: bold;
+    text-align: center;
+    margin-top:1.5rem;
+    width:100%;
+    border-radius: 20px;
+    font-size:1rem;
+    padding-top:.8rem;
+    padding-bottom:.8rem;
+    cursor: pointer;
+}
+.addNewItemBtn:hover{
+    opacity: .7;
+    transition: all .2s;
+}
+
 .cancelSaveBtn{
     display:flex;
     flex-direction: row;
+    margin-top: 2rem;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap:.4rem;
+}
+.cancelSaveBtn>p,.submitNewInvoiceBtn{
+    border-radius:20px;
+    border:none;
+    padding: .6rem 1rem;
+    font-size:1rem;
+    margin:0px;
+}
+.submitNewInvoiceBtn:hover{
+    cursor: pointer;
+    opacity: .7;
+    transition: all .2s;
+}
+.cancelSaveBtn>p:hover{
+    cursor: pointer;
+    opacity: .7;
+    transition: all .2s;
+}
+.submitNewInvoiceBtn{
+    font-weight: bold;
+    color:white;
+    background-color: #7c5efa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    text-align: center;
+    text-justify: center;
 }
