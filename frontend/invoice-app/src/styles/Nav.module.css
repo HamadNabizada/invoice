@@ -1,12 +1,11 @@
 .navContainer{
     background-color:#20243c;
-    /* height:100vh; */
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
     display:flex;
     flex-direction: column;
     align-items: center;
-    min-width: 100px;
+    width: 70px;
 }
 .logoContainer{
     border-top-right-radius: 25px;
