@@ -8,7 +8,22 @@
     left:70px;
     padding: 2rem;
     gap:.5rem;
-    border: 1px solid red;
+    max-height: 90vh;
+    overflow-y: scroll;
+
+}
+.newInvoiceModalContainer::-webkit-scrollbar{
+    width:.5vw;
+}
+.newInvoiceModalContainer::-webkit-scrollbar-thumb{
+    background-color:#4d4197;
+    border-radius: 50px;
+}
+.newInvoiceModalContainer::-webkit-scrollbar-track{
+    background-color:gray;
+    border-radius: 50px;
+    margin-top:1rem;
+    margin-bottom:1rem;
 }
 h4,h5{
     margin:0px;
@@ -192,4 +207,35 @@ input::-webkit-inner-spin-button {
     sans-serif;
     text-align: center;
     text-justify: center;
+}
+
+@media screen and (max-width:800px){
+    .submitNewInvoiceBtn,.cancelSaveBtn>p{
+        font-size:.7rem;
+        border-radius: 5px;
+    }
+    .submitNewInvoiceBtn{
+        height:100%;
+    }
+    .newInvoiceModalContainer{
+        box-sizing: border-box;
+        position:absolute;
+        top:70px;
+        left: 0px;
+        height:100vh;
+        min-width:100%;
+        overflow-y: scroll;
+    }
+    .newInvoiceModalContainer::-webkit-scrollbar{
+        width:1vw;
+    }
+    .newInvoiceModalContainer::-webkit-scrollbar-track{
+        margin-top:.2rem;
+        margin-bottom:.2rem;
+    }
+    .cityContainer{
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 }

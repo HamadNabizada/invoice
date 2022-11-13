@@ -109,7 +109,8 @@ export default function NewInvoice(props){
                 </div>
                 <div className={styles.cancelSaveBtn}>
                     <p style={bgColor}>Cancel</p>
-                    <button className={styles.submitNewInvoiceBtn} type='submit'>Save Changes</button>
+                    <button className={styles.submitNewInvoiceBtn} type='submit'>Save Draft</button>
+                    <button className={styles.submitNewInvoiceBtn} type='submit'>Submit Invoice</button>
                 </div>
             </form>
         </div>
