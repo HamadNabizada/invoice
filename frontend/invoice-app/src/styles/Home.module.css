@@ -190,3 +190,8 @@
     }
 
 }
+
+.modalActiveMain{
+   filter:brightness(20%);
+   pointer-events: none;
+}

@@ -1,4 +1,4 @@
-.newInvoiceModalContainer{
+.newInvoiceModalContainer,.newInvoiceModalInactive{
     display:flex;
     flex-direction: column;
     position:absolute;
@@ -10,20 +10,27 @@
     gap:.5rem;
     max-height: 90vh;
     overflow-y: scroll;
-
+    z-index: 5;
+    transition:left ease-out .6s;
+}
+.newInvoiceModalInactive{
+    left: -100vw;
+    
 }
 .newInvoiceModalContainer::-webkit-scrollbar{
-    width:.5vw;
+    width:.7rem;
 }
 .newInvoiceModalContainer::-webkit-scrollbar-thumb{
     background-color:#4d4197;
     border-radius: 50px;
+
 }
 .newInvoiceModalContainer::-webkit-scrollbar-track{
     background-color:gray;
     border-radius: 50px;
     margin-top:1rem;
     margin-bottom:1rem;
+
 }
 h4,h5{
     margin:0px;
@@ -121,6 +128,7 @@ option{
     display:grid;
     grid-template-columns: 40% 10% 20% 20% 5%;
     justify-content: space-between;
+    margin-bottom:.3rem;
 }
 .singleItemLine>input{
     max-height:1rem;
@@ -170,7 +178,11 @@ input::-webkit-inner-spin-button {
 }
 .addNewItemBtn:hover{
     opacity: .7;
-    transition: all .2s;
+    transition: opacity .2s;
+}
+.addNewItemBtn:active{
+    filter: brightness(50%);
+    user-select: none;
 }
 
 .cancelSaveBtn{

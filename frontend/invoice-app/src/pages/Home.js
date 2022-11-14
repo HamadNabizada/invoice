@@ -6,6 +6,11 @@ import dark from '../assets/dark.svg'
 import NewInvoiceModal from '../components/NewInvoiceModal'
 
 export default function Home(){
+    let [isNewInvoiceModalActive, setNewInvoiceModalActive] = useState(false)
+
+    let modalStyles = { 
+        main: isNewInvoiceModalActive ? style.modalActiveMain : ''
+    }
 
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
@@ -44,6 +49,12 @@ export default function Home(){
             boxShadow: currentTheme.shadow
         }
     }
+    function createNewInvoice(){
+        setNewInvoiceModalActive(true)
+    }
+    function cancelNewInvoice(){
+        setNewInvoiceModalActive(false)
+    }
     document.body.style.backgroundColor = styleTheme.layout.backgroundColor
 
     return(
@@ -53,9 +64,11 @@ export default function Home(){
              theme = {theme}
             />
             <NewInvoiceModal 
-                let theme = {styleTheme}
+                isActive = {isNewInvoiceModalActive}
+                theme = {styleTheme}
+                handleCancel = {cancelNewInvoice}
             />
-            <main style={styleTheme.main}  className={style.mainHome}>
+            <main style={styleTheme.main} className={`${style.mainHome} ${modalStyles.main}`}>
                 <section className={style.header}>
                     <div className={style.title}>
                         <h1 className={style.invoiceTitle}>Invoices</h1>
@@ -71,8 +84,7 @@ export default function Home(){
                                 <option value="paid">Paid</option>
                             </select>
                         </div>
-                        <div className={style.newInvoice}>
-                            {/* <p className={style.newInvoicePlusBtn}>+</p> */}
+                        <div onClick={createNewInvoice} className={style.newInvoice}>
                             <p className={style.newInvoiceText}>New Invoice</p>
                         </div>
                     </div>
