@@ -14,8 +14,7 @@
     transition:left ease-out .6s;
 }
 .newInvoiceModalInactive{
-    left: -100vw;
-    
+    left: -150vw;
 }
 .newInvoiceModalContainer::-webkit-scrollbar{
     width:.7rem;

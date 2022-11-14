@@ -5,30 +5,31 @@ let invoiceSchema = mongoose.Schema({
     "billFrom": {
         'street': String,
         'city':String,
-        'zipcode':Number,
+        'zipCode':Number,
         'country':String
     },
     'billTo':{
         'clientName':String,
         'clientEmail':String,
-        'clientstreet': String,
-        'clientcity':String,
-        'clientzipcode':Number,
-        'clientcountry':String
+        'clientStreet': String,
+        'clientCity':String,
+        'clientZipCode':Number,
+        'clientCountry':String
     },
     // 'invoiceDate':Date,
     // 'paymentDue':Date,
     'paymentTerms':Number,
-    'productDescription':String,
-    'itemList':{
+    'projectDescription':String,
+    'itemList':[{
         'listItem':{
             'itemName':String,
-            'itemQTY':Number,
+            'itemQty':Number,
             'itemPrice':Number,
-            'listItemTotal':Number
+            'itemLineTotal':Number
         }
-    },
-    'totalInvoice':Number
+    }],
+    'totalInvoice':Number,
+    'invoiceStatus':String
 })
 
 export default mongoose.model('Invoice', invoiceSchema)
