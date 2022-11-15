@@ -1,8 +1,9 @@
 import styles from '../styles/NewInvoiceModal.module.css'
 import trashIcon from '../assets/trash.svg'
-import {useState, useEffect} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 export default function NewInvoice(props){
+    let firstRender = useRef(true)
     let bgColor = {
         backgroundColor: props.theme.subBG.backgroundColor,
         border: props.theme.lightTheme ? '1px solid darkgray':'1px solid gray',
@@ -43,7 +44,7 @@ export default function NewInvoice(props){
             'listItemTotal':''
         }],
         'totalInvoice':'',
-        'invoiceStatus':''
+        'invoiceStatus':'Draft'
     })
     let [itemLineCounter, setItemLineCounter] = useState(1)
     let itemListObj = {
@@ -54,7 +55,16 @@ export default function NewInvoice(props){
     }
     let itemListArray = [itemListObj]
     let [itemList, setItemList] = useState(itemListArray)
-
+    let [invoiceStatus, setInvoiceStatus] = useState('Pending')
+    function updateInvoiceStatus(e){
+        setInvoiceStatus(e.target.value)
+        setJSON(prevJSON=>{
+            return {
+                ...prevJSON,
+                invoiceStatus:invoiceStatus
+            }
+        })
+    }
     function updateItemList(e){
         setItemList(prevItemList =>{
             let newItemList = prevItemList.map((listItem,i) =>{
@@ -194,18 +204,27 @@ export default function NewInvoice(props){
             return newCounter
         })
         
+    }  
+    function handleSubmit(e){
+        e.preventDefault()
+        
     }
-
     useEffect(()=>{
         console.log(newJSON)
+        firstRender.current = false
     })
     return (
         <div style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
             <h3>New Invoice</h3>
-            <form className={styles.newInvoiceForm} action="/createNewInvoice" method='POST'>
+            <form onSubmit={handleSubmit} className={styles.newInvoiceForm}>
                 <div className={styles.labelInputPair}>
                     <label htmlFor="invoiceID">Invoice ID</label>
                     <input value={invoiceID} onChange={updateInvoiceID} style={bgColor} id='invoiceID' type="text" required/>
+                    <label htmlFor="invoiceStatus">Invoice Status</label>
+                    <select onClick={updateInvoiceStatus} style={bgColor} name="invoiceStatus" id="invoiceStatus">
+                        <option value="Draft">Draft</option>
+                        <option value="Pending">Pending</option>
+                    </select>
                 </div>
                 <div className={styles.billFromContainer}>
                     <h4>Bill From</h4>
@@ -287,7 +306,6 @@ export default function NewInvoice(props){
                 </div>
                 <div className={styles.cancelSaveBtn}>
                     <p onClick={props.handleCancel} style={bgColor}>Cancel</p>
-                    <button className={styles.submitNewInvoiceBtn} type='submit'>Save Draft</button>
                     <button className={styles.submitNewInvoiceBtn} type='submit'>Submit Invoice</button>
                 </div>
             </form>
