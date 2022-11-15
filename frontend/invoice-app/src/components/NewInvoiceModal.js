@@ -2,6 +2,7 @@ import styles from '../styles/NewInvoiceModal.module.css'
 import trashIcon from '../assets/trash.svg'
 import {useState, useRef, useEffect} from 'react'
 
+
 export default function NewInvoice(props){
     let firstRender = useRef(true)
     let bgColor = {
@@ -207,7 +208,7 @@ export default function NewInvoice(props){
     }  
     function handleSubmit(e){
         e.preventDefault()
-        
+
     }
     useEffect(()=>{
         console.log(newJSON)

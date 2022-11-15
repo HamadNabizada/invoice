@@ -11,7 +11,12 @@ export default function Home(){
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
     }
-
+    async function fetchData(){
+        let db = await fetch('http://localhost:8000/')
+        let data = await db.json()
+        console.log(data);
+    }
+    fetchData()
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
     let toggleTheme = ()=>{
