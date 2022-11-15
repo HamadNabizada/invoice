@@ -1,6 +1,6 @@
 import Nav from '../components/Nav'
 import style from '../styles/Home.module.css'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import light from '../assets/light.svg'
 import dark from '../assets/dark.svg'
 import NewInvoiceModal from '../components/NewInvoiceModal'
@@ -11,12 +11,47 @@ export default function Home(){
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
     }
-    async function fetchData(){
-        let db = await fetch('http://localhost:8000/')
-        let data = await db.json()
-        console.log(data);
+    let [allInvoices, setAllInvoices] = useState([{
+        "invoiceID": '',
+        "billFrom": {
+            'street': '',
+            'city':'',
+            'zipCode':'',
+            'country':''
+        },
+        'billTo':{
+            'clientName':'',
+            'clientEmail':'',
+            'clientStreet': '',
+            'clientCity':'',
+            'clientZipCode':'',
+            'clientCountry':''
+        },
+        // 'invoiceDate':Date,
+        // 'paymentDue':Date,
+        'paymentTerms':'30',
+        'projectDescription':'',
+        'itemList':[{
+            'itemName':'',
+            'itemQty':'',
+            'itemPrice':'',
+            'listItemTotal':''
+        }],
+        'totalInvoice':'',
+        'invoiceStatus':'Draft'
+    }])
+    useEffect(()=>{
+      async function fetchData(){
+        let apiCall = await fetch('http://localhost:8000/')
+        let data = await apiCall.json()
+        setAllInvoices(data)
+       }
+       fetchData()    
+    },[])
+
+    function logdata(){
+        console.log(allInvoices)
     }
-    fetchData()
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
     let toggleTheme = ()=>{
@@ -46,6 +81,9 @@ export default function Home(){
             color: currentTheme.textColor,
             backgroundColor: currentTheme.bgColor
         },
+        mainText:{
+            color: currentTheme.textColor,
+        },
         minorText:{
             color: currentTheme.minorTextColor,
         },
@@ -61,9 +99,29 @@ export default function Home(){
         setNewInvoiceModalActive(false)
     }
     document.body.style.backgroundColor = styleTheme.layout.backgroundColor
+    function createInvoicesElements(){
+        let invoicesArray = allInvoices.map((invoice,index)=>{
+            return(
+                <h2 key={index} style={styleTheme.subBG} className={style.invoice}>
+                    <p className={style.invoiceID}>{invoice.invoiceID}</p>
+                    <p style={styleTheme.minorText} className={style.invoiceDue}>Due 19 August 2021</p>
+                    <p style={styleTheme.mainText} className={style.invoiceOwner}>{invoice.billTo.clientName}</p>
+                    <p className={style.invoiceCost}>{invoice.totalInvoice}</p>
+                    <p className={style.invoiceStatus}>&#x2022; {invoice.invoiceStatus}</p>
+                    <p className={style.rightArrow}>&#8250;</p>
+                </h2>
+            )
+        })
+        return invoicesArray
+    }
+    let [invoicesElement,setInvoicesElement] = useState(createInvoicesElements)
+    useEffect(()=>{
+        setInvoicesElement(createInvoicesElements)
+    }, [allInvoices,lightMode])
 
+    
     return(
-        <div style={styleTheme.layout} className={style.layoutContainer}>
+        <div onClick={logdata} style={styleTheme.layout} className={style.layoutContainer}>
             <Nav 
              handleClick={toggleTheme}
              theme = {theme}
@@ -95,22 +153,7 @@ export default function Home(){
                     </div>
                 </section>
                 <section className={style.invoices}>
-                    <h2 style={styleTheme.subBG} className={style.invoice}>
-                        <p className={style.invoiceID}>#RT3080</p>
-                        <p style={styleTheme.minorText} className={style.invoiceDue}>Due 19 August 2021</p>
-                        <p style={styleTheme.minorText} className={style.invoiceOwner}>Jensen Huang</p>
-                        <p className={style.invoiceCost}>$1200.99</p>
-                        <p className={style.invoiceStatus}>&#x2022; PAID</p>
-                        <p className={style.rightArrow}>&#8250;</p>
-                    </h2>
-                    <h2 style={styleTheme.subBG} className={style.invoice}>
-                        <p className={style.invoiceID}>#RT3080</p>
-                        <p style={styleTheme.minorText} className={style.invoiceDue}>Due 19 may 2021</p>
-                        <p style={styleTheme.minorText} className={style.invoiceOwner}>Jensff234234234234asdfen Huang</p>
-                        <p className={style.invoiceCost}>$1200.99</p>
-                        <p className={style.invoiceStatus}>&#x2022; PENDING</p>
-                        <p className={style.rightArrow}>&#8250;</p>
-                    </h2>
+                 {invoicesElement}
                 </section>
             </main>
             
