@@ -140,7 +140,23 @@ export default function Home(){
     useEffect(()=>{
         setInvoicesElement(createInvoicesElements)
     }, [allInvoices,lightMode])
-
+    let [filter, setFilter]=useState('All')
+    function updateFilter(e){
+        setFilter(e.target.value)
+    }
+    async function filterInvoicesAPICall(){
+        let apiPOST = await fetch('http://localhost:8000/',{
+            method:'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({filter})
+        })
+        let data = await apiPOST.json()
+        setAllInvoices(data)
+    }
+    useEffect(()=>{
+        console.log(filter)
+        filterInvoicesAPICall()
+    },[filter])
     
     return(
         <div style={styleTheme.layout} className={style.layoutContainer}>
@@ -162,11 +178,11 @@ export default function Home(){
                     <div className={style.newInvoiceAndFilterContainer}>
                         <div className={style.filterContainer}>
                             <label htmlFor='filterSelection' className={style.filterLabel}>Filter by: </label>
-                            <select className={style.filterSelect} name="filterSelection" id="filterSelection">
-                                <option value="all">All</option>
-                                <option value="draft">Draft</option>
-                                <option value="pending">Pending</option>
-                                <option value="paid">Paid</option>
+                            <select onChange={updateFilter} value={filter} className={style.filterSelect} name="filterSelection" id="filterSelection">
+                                <option value="All">All</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Paid">Paid</option>
                             </select>
                         </div>
                         <div onClick={createNewInvoice} className={style.newInvoice}>

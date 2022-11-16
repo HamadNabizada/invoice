@@ -196,7 +196,7 @@ export default function NewInvoice(props){
         window.location.reload();
     }
     let submitToAPI = async ()=>{
-        let apiCall = await fetch('http://localhost:8000/',{
+        let apiCall = await fetch('http://localhost:8000/createNewInvoice',{
             method:'POST',
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({newJSON})
