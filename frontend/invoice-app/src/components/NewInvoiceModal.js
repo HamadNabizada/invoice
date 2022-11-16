@@ -71,19 +71,17 @@ export default function NewInvoice(props){
     }
     let itemListArray = [itemListObj]
     let [itemList, setItemList] = useState(itemListArray)
-    let [invoiceStatus, setInvoiceStatus] = useState('Pending')
     function updateInvoiceStatus(e){
-        setInvoiceStatus(e.target.value)
         setJSON(prevJSON=>{
             return {
                 ...prevJSON,
-                invoiceStatus:invoiceStatus
+                invoiceStatus:e.target.value
             }
         })
     }
     function updateItemList(e){
-        setItemList(prevItemList =>{
-            let newItemList = prevItemList.map((listItem,i) =>{
+        setJSON(prevJSON=>{
+            let newItemList = prevJSON.itemList.map((listItem,i) =>{
                 if(e.target.getAttribute('data-listIndex')==i){
                     return {
                         ...listItem,
@@ -96,134 +94,99 @@ export default function NewInvoice(props){
                     }
                 }
             })
-            return newItemList
+            return{
+                ...prevJSON,
+                itemList: newItemList
+            }
         })
-        setItemList(prevList=>{
-            let newList = prevList.map(listItem=>{
+        setJSON(prevJSON=>{
+            let newList = prevJSON.itemList.map(listItem=>{
                 let totalPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listItem.itemQty * listItem.itemPrice)
                 return {
                     ...listItem,
-                    itemLineTotal: totalPrice
+                    listItemTotal: totalPrice
                 }
             })
-            return newList
-        })
-        setJSON(prevJSON=>{
-            let newJSON = {
+            return {
                 ...prevJSON,
-                itemList: itemList
+                itemList:newList
             }
-            return newJSON
         })
     }
-    // let [invoiceID, setInvoiceID] = useState('')
-    let [billFromJSON, setBillFromJSON]=useState({
-        'street': '',
-        'city':'',
-        'zipCode':'',
-        'country':''
-    })
-    let [billToJSON, setBillToJSON]=useState({
-        'clientName':'',
-        'clientEmail':'',
-        'clientStreet': '',
-        'clientCity':'',
-        'clientZipCode':'',
-        'clientCountry':''
-    })
-    let [paymentTerms,setPaymentTerms]=useState('30')
     function updateInvoiceID(e){
-        // setInvoiceID(prevID =>{
-        //     return e.target.value
-        // })
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
                 invoiceID: e.target.value
             }
         })
-
     }
-    let [projectDescription, setProjectDescription] = useState('')
     function updateBillFromJSON(e){
-        setBillFromJSON(prevJSON =>{
-            return{
-                ...prevJSON,
-                [e.target.id]:e.target.value
-            }
-        })
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
-                billFrom: billFromJSON
+                billFrom: {
+                    ...prevJSON.billFrom,
+                    [e.target.id]:e.target.value
+                }
             }
         })
     }
     function updateBillToJSON(e){
-        setBillToJSON(prevJSON =>{
-            return{
-                ...prevJSON,
-                [e.target.id]:e.target.value
-            }
-        })
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
-                billTo: billToJSON
+                billTo: {
+                    ...prevJSON.billTo,
+                    [e.target.id]:e.target.value
+                }
             }
         })
     }
     function updateProjectDescription(e){
-        setProjectDescription(e.target.value)
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
-                projectDescription:projectDescription
+                projectDescription:e.target.value
             }
         })
-
     }
     function updatePaymentTerms(e){
-        setPaymentTerms(e.target.value)
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
-                paymentTerms:paymentTerms
+                paymentTerms:e.target.value
             }
         })
     }  
-    let itemLineArray = []
-    for (let i = 0; i < itemLineCounter; i++) {
+    let itemLineElementsArray = []
+    
+    newJSON.itemList.forEach((listItem,i) => {
         let singleItemLineElement = (
             <div key={i} className={styles.singleItemLine}>
-                <input data-listindex={i} id='itemName' onChange={updateItemList} style={bgColor} type="text" />
-                <input data-listindex={i} id='itemQty' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
-                <input placeholder='0' data-listindex={i} id='itemPrice' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
-                <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{itemList[i].itemLineTotal}</p>
+                <input required value={newJSON.itemList[i].itemName} data-listindex={i} id='itemName' onChange={updateItemList} style={bgColor} type="text" />
+                <input required value={newJSON.itemList[i].itemQty}  data-listindex={i} id='itemQty' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
+                <input required value={newJSON.itemList[i].itemPrice} data-listindex={i} id='itemPrice' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
+                <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{newJSON.itemList[i].listItemTotal}</p>
                 <div data-listindex={i} className={styles.trashIcon}><img src={trashIcon} alt="remove item" /></div>
             </div>
         )
-        itemLineArray.push(singleItemLineElement)
-    }
+        itemLineElementsArray.push(singleItemLineElement)
+    })
     function createNewItemLine(){
-        setItemList(prevList=>{
-            let newList = prevList.map(ListItem=>{
-                return {
-                    ...ListItem
-                }
+        setJSON(prevJSON=>{
+            let updatedJSON = {...prevJSON}
+            updatedJSON.itemList.push({
+                'itemName':'',
+                'itemQty':'',
+                'itemPrice':'',
+                'listItemTotal':''
             })
-            newList.push(itemListObj)
-            return newList
+            return updatedJSON
         })
-        setItemLineCounter(prevCounter => {
-            let newCounter = prevCounter + 1
-            return newCounter
-        })
-        
-    }  
+    }
     function handleSubmit(e){
         e.preventDefault()
-
     }
     function displayDate(date){
         return `${date.getMonth()}-${date.getDate()}-${date.getYear()}`
@@ -252,20 +215,20 @@ export default function NewInvoice(props){
                     <h4>Bill From</h4>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="street">Street Address</label>
-                        <input value={billFromJSON.street} onChange={updateBillFromJSON} style={bgColor} id='street' type="text" />
+                        <input required value={newJSON.billFrom.street} onChange={updateBillFromJSON} style={bgColor} id='street' type="text" />
                     </div>
                     <div className={styles.cityContainer}>
                         <div className={styles.labelInputPair}>
                             <label htmlFor="city">City</label>
-                            <input value={billFromJSON.city} onChange={updateBillFromJSON} style={bgColor} id='city' type="text" />
+                            <input required value={newJSON.billFrom.city} onChange={updateBillFromJSON} style={bgColor} id='city' type="text" />
                         </div>
                         <div className={styles.labelInputPair}>
                             <label htmlFor="zipCode">Zip Code</label>
-                            <input value={billFromJSON.zipCode} onChange={updateBillFromJSON} style={bgColor} id='zipCode' type="number" />
+                            <input required value={newJSON.billFrom.zipCode} onChange={updateBillFromJSON} style={bgColor} id='zipCode' type="number" />
                         </div>
                         <div className={styles.labelInputPair}>                            
                             <label htmlFor="country">Country</label>
-                            <input value={billFromJSON.country} onChange={updateBillFromJSON} style={bgColor} id='country' type="text" />
+                            <input required value={newJSON.billFrom.country} onChange={updateBillFromJSON} style={bgColor} id='country' type="text" />
                         </div>
                     </div>
                 </div>
@@ -273,28 +236,28 @@ export default function NewInvoice(props){
                     <h4>Bill To</h4>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="clientName">Client Name</label>
-                        <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientName' type="text" />
+                        <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientName' type="text" />
                     </div>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="clientEmail">Client Email</label>
-                        <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientEmail' type="text" />
+                        <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientEmail' type="text" />
                     </div>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="clientStreet">Street Address</label>
-                        <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientStreet' type="text" />
+                        <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientStreet' type="text" />
                     </div>
                     <div className={styles.cityContainer}>
                         <div className={styles.labelInputPair}>
                             <label htmlFor="clientCity">City</label>
-                            <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientCity' type="text" />
+                            <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientCity' type="text" />
                         </div>
                         <div className={styles.labelInputPair}>
                             <label htmlFor="clientZipCode">Zip Code</label>
-                            <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientZipCode' type="number" />                        
+                            <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientZipCode' type="number" />                        
                         </div>
                         <div className={styles.labelInputPair}>
                             <label htmlFor="clientCountry">Country</label>
-                            <input value={billToJSON.street} onChange={updateBillToJSON} style={bgColor} id='clientCountry' type="text" />                        
+                            <input required value={newJSON.billTo.street} onChange={updateBillToJSON} style={bgColor} id='clientCountry' type="text" />                        
                         </div>
                     </div>
                 </div>
@@ -313,7 +276,7 @@ export default function NewInvoice(props){
                 </div>
                 <div className={styles.labelInputPair}>
                     <label htmlFor="projectDescription">Project Description</label>
-                    <input value={projectDescription} onChange={updateProjectDescription} style={bgColor} type="text" />
+                    <input required value={newJSON.projectDescription} onChange={updateProjectDescription} style={bgColor} type="text" />
                 </div>
                 <div className={styles.itemListContainer}>
                     <h5>Item List</h5>
@@ -323,7 +286,7 @@ export default function NewInvoice(props){
                         <p>Price</p>
                         <p>Total</p>
                     </div>
-                    {itemLineArray}
+                    {itemLineElementsArray}
                     <div onClick={createNewItemLine} style={bgColor} className={styles.addNewItemBtn}>+ Add New Item</div>
                 </div>
                 <div className={styles.cancelSaveBtn}>
