@@ -96,15 +96,40 @@ export default function Home(){
         setNewInvoiceModalActive(false)
     }
     document.body.style.backgroundColor = styleTheme.layout.backgroundColor
+    function formatDueDate(string){
+        let date = string.slice(0,10)
+        let dateArray = date.split('-')
+        let dateYear = dateArray[0]
+        let dateMonth = dateArray[1]
+        let dateDay = dateArray[2]
+        let months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
+        let dueDateFormatted = `Due ${dateDay} ${months[dateMonth-1]} ${dateYear}`
+        return dueDateFormatted
+    }
     function createInvoicesElements(){
         let invoicesArray = allInvoices.map((invoice,index)=>{
+            let dueDate = 'Due'
+            if(invoice.paymentDue){
+                dueDate = formatDueDate(invoice.paymentDue)
+            }
+            let classStyle = style.invoiceStatus
+            if(invoice.invoiceStatus === 'Draft'){
+                classStyle = style.invoiceStatusDraft
+            }
+            if(invoice.invoiceStatus === 'Pending'){
+                classStyle = style.invoiceStatusPending
+            }
+            if(invoice.invoiceStatus === 'Paid'){
+                classStyle = style.invoiceStatusPaid
+            }
             return(
                 <h2 key={index} style={styleTheme.subBG} className={style.invoice}>
                     <p className={style.invoiceID}>{invoice.invoiceID}</p>
-                    <p style={styleTheme.minorText} className={style.invoiceDue}>Due 19 August 2021</p>
+                    <p style={styleTheme.minorText} className={style.invoiceDue}>{dueDate}</p>
                     <p style={styleTheme.mainText} className={style.invoiceOwner}>{invoice.billTo.clientName}</p>
                     <p className={style.invoiceCost}>{invoice.totalInvoice}</p>
-                    <p className={style.invoiceStatus}>&#x2022; {invoice.invoiceStatus}</p>
+                    <p className={classStyle}>&#x2022; {invoice.invoiceStatus}</p>
                     <p className={style.rightArrow}>&#8250;</p>
                 </h2>
             )
@@ -132,7 +157,7 @@ export default function Home(){
                 <section className={style.header}>
                     <div className={style.title}>
                         <h1 className={style.invoiceTitle}>Invoices</h1>
-                        <h3 style={styleTheme.minorText} className={style.invoiceSubTitle}>There are 4 total invoices</h3>
+                        <h3 style={styleTheme.minorText} className={style.invoiceSubTitle}>{`There are ${allInvoices.length} total invoices`}</h3>
                     </div>
                     <div className={style.newInvoiceAndFilterContainer}>
                         <div className={style.filterContainer}>
