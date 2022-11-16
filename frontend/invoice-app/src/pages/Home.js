@@ -49,9 +49,6 @@ export default function Home(){
        fetchData()    
     },[])
 
-    function logdata(){
-        console.log(allInvoices)
-    }
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
     let toggleTheme = ()=>{
@@ -121,7 +118,7 @@ export default function Home(){
 
     
     return(
-        <div onClick={logdata} style={styleTheme.layout} className={style.layoutContainer}>
+        <div style={styleTheme.layout} className={style.layoutContainer}>
             <Nav 
              handleClick={toggleTheme}
              theme = {theme}

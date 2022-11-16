@@ -3,7 +3,9 @@ import trashIcon from '../assets/trash.svg'
 import {useState, useRef, useEffect} from 'react'
 
 
+
 export default function NewInvoice(props){
+
     let firstRender = useRef(true)
     let bgColor = {
         backgroundColor: props.theme.subBG.backgroundColor,
@@ -48,20 +50,10 @@ export default function NewInvoice(props){
             'listItemTotal':''
         }],
         'totalInvoice':'',
-        'invoiceStatus':'Draft'
+        'invoiceStatus':'Draft',
+        'test':'test1'
     })
-    function setDueDate(){
-        let invoiceDate = new Date();
-        let paymentDue = new Date()
-        paymentDue = new Date (paymentDue.setDate(paymentDue.getDate() + 30))
-        setJSON(prevJSON=>{
-            return{
-                ...prevJSON,
-                'invoiceDate':invoiceDate,
-                'paymentDue':paymentDue,
-            }
-        })
-    }
+   
     let [itemLineCounter, setItemLineCounter] = useState(1)
     let itemListObj = {
         'itemName':'',
@@ -101,15 +93,28 @@ export default function NewInvoice(props){
         })
         setJSON(prevJSON=>{
             let newList = prevJSON.itemList.map(listItem=>{
-                let totalPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listItem.itemQty * listItem.itemPrice)
+                let totalPriceFormatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(listItem.itemQty * listItem.itemPrice)
                 return {
                     ...listItem,
-                    listItemTotal: totalPrice
+                    listItemTotalFormatted: totalPriceFormatted,
+                    listItemTotal: listItem.itemQty * listItem.itemPrice
                 }
             })
             return {
                 ...prevJSON,
                 itemList:newList
+            }
+        })
+        setJSON(prevJSON=>{
+            let pricesArray = prevJSON.itemList.map(item=>{
+                return item.listItemTotal
+            })
+            let totalSum = pricesArray.reduce((a,b)=>a+b)
+            let totalSumFormatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalSum)
+            return {
+                ...prevJSON,
+                'totalInvoice':totalSum,
+                'totalInvoiceFormatted':totalSumFormatted
             }
         })
     }
@@ -167,7 +172,7 @@ export default function NewInvoice(props){
                 <input required value={newJSON.itemList[i].itemName} data-listindex={i} id='itemName' onChange={updateItemList} style={bgColor} type="text" />
                 <input required value={newJSON.itemList[i].itemQty}  data-listindex={i} id='itemQty' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
                 <input required value={newJSON.itemList[i].itemPrice} data-listindex={i} id='itemPrice' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
-                <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{newJSON.itemList[i].listItemTotal}</p>
+                <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{newJSON.itemList[i].listItemTotalFormatted}</p>
                 <div data-listindex={i} className={styles.trashIcon}><img src={trashIcon} alt="remove item" /></div>
             </div>
         )
@@ -187,19 +192,27 @@ export default function NewInvoice(props){
     }
     function handleSubmit(e){
         e.preventDefault()
+        submitToAPI()
+        window.location.reload();
+    }
+    let submitToAPI = async ()=>{
+        let apiCall = await fetch('http://localhost:8000/',{
+            method:'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({newJSON})
+        })
+        let data = await apiCall.json()
     }
     function displayDate(date){
         return `${date.getMonth()}-${date.getDate()}-${date.getYear()}`
     }
     let [currentDateDisplay,setCurrentDateDisplay] = useState('MM-DD-YYYY')
     useEffect(()=>{
-        console.log(newJSON,)
         firstRender.current = false
         setCurrentDateDisplay(displayDate(newJSON.invoiceDate))
     })
-
     return (
-        <div onClick={setDueDate} style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
+        <div style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
             <h3>New Invoice</h3>
             <form onSubmit={handleSubmit} className={styles.newInvoiceForm}>
                 <div className={styles.labelInputPair}>
@@ -264,7 +277,7 @@ export default function NewInvoice(props){
                 <div className={styles.invoiceDateAndTerm}>
                     <div className={styles.labelInputPair}>
                         <label style={themeColor} htmlFor="invoiceDate">Invoice Date</label>
-                        <input style={dateTheme} placeholder={currentDateDisplay} id='invoiceDate' type="text" />
+                        <input tabIndex='-1' style={dateTheme} placeholder={currentDateDisplay} id='invoiceDate' type="text" />
                     </div>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="paymentTerms">Payment Terms</label>

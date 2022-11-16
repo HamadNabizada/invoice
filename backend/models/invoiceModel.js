@@ -16,17 +16,15 @@ let invoiceSchema = mongoose.Schema({
         'clientZipCode':Number,
         'clientCountry':String
     },
-    // 'invoiceDate':Date,
-    // 'paymentDue':Date,
+    'invoiceDate':Date,
+    'paymentDue':Date,
     'paymentTerms':Number,
     'projectDescription':String,
     'itemList':[{
-        'listItem':{
-            'itemName':String,
-            'itemQty':Number,
-            'itemPrice':Number,
-            'itemLineTotal':Number
-        }
+        'itemName':String,
+        'itemQty':Number,
+        'itemPrice':Number,
+        'itemLineTotal':Number
     }],
     'totalInvoice':Number,
     'invoiceStatus':String

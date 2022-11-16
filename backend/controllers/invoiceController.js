@@ -7,7 +7,9 @@ let getInvoices = asyncHandler(async (req, res)=>{
 })
 
 let postInvoices = asyncHandler(async (req, res)=>{
-    res.json('invoice created')
+    await Invoice.create(req.body.newJSON)
+    res.json('POST')
+    
 })
 
 let putInvoices = asyncHandler(async (req, res)=>{
