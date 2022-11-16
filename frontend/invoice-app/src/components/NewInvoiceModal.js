@@ -17,6 +17,9 @@ export default function NewInvoice(props){
     let dateTheme = {
         backgroundColor: props.theme.lightTheme ?  'rgba(0,0,0,.25)':'rgba(255,255,255,.75)'
     }
+    let currentDate = new Date
+    let paymentDue = new Date()
+    paymentDue = new Date (paymentDue.setDate(paymentDue.getDate() + 30))
 
     let [newJSON,setJSON] = useState({
         "invoiceID": '',
@@ -34,8 +37,8 @@ export default function NewInvoice(props){
             'clientZipCode':'',
             'clientCountry':''
         },
-        // 'invoiceDate':Date,
-        // 'paymentDue':Date,
+        'invoiceDate': currentDate,
+        'paymentDue':paymentDue,
         'paymentTerms':'30',
         'projectDescription':'',
         'itemList':[{
@@ -47,6 +50,18 @@ export default function NewInvoice(props){
         'totalInvoice':'',
         'invoiceStatus':'Draft'
     })
+    function setDueDate(){
+        let invoiceDate = new Date();
+        let paymentDue = new Date()
+        paymentDue = new Date (paymentDue.setDate(paymentDue.getDate() + 30))
+        setJSON(prevJSON=>{
+            return{
+                ...prevJSON,
+                'invoiceDate':invoiceDate,
+                'paymentDue':paymentDue,
+            }
+        })
+    }
     let [itemLineCounter, setItemLineCounter] = useState(1)
     let itemListObj = {
         'itemName':'',
@@ -101,7 +116,7 @@ export default function NewInvoice(props){
             return newJSON
         })
     }
-    let [invoiceID, setInvoiceID] = useState('')
+    // let [invoiceID, setInvoiceID] = useState('')
     let [billFromJSON, setBillFromJSON]=useState({
         'street': '',
         'city':'',
@@ -118,13 +133,13 @@ export default function NewInvoice(props){
     })
     let [paymentTerms,setPaymentTerms]=useState('30')
     function updateInvoiceID(e){
-        setInvoiceID(prevID =>{
-            return e.target.value
-        })
+        // setInvoiceID(prevID =>{
+        //     return e.target.value
+        // })
         setJSON(prevJSON=>{
             return{
                 ...prevJSON,
-                invoiceID: invoiceID
+                invoiceID: e.target.value
             }
         })
 
@@ -210,19 +225,25 @@ export default function NewInvoice(props){
         e.preventDefault()
 
     }
+    function displayDate(date){
+        return `${date.getMonth()}-${date.getDate()}-${date.getYear()}`
+    }
+    let [currentDateDisplay,setCurrentDateDisplay] = useState('MM-DD-YYYY')
     useEffect(()=>{
-        console.log(newJSON)
+        console.log(newJSON,)
         firstRender.current = false
+        setCurrentDateDisplay(displayDate(newJSON.invoiceDate))
     })
+
     return (
-        <div style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
+        <div onClick={setDueDate} style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
             <h3>New Invoice</h3>
             <form onSubmit={handleSubmit} className={styles.newInvoiceForm}>
                 <div className={styles.labelInputPair}>
                     <label htmlFor="invoiceID">Invoice ID</label>
-                    <input value={invoiceID} onChange={updateInvoiceID} style={bgColor} id='invoiceID' type="text" required/>
-                    <label htmlFor="invoiceStatus">Invoice Status</label>
-                    <select onClick={updateInvoiceStatus} style={bgColor} name="invoiceStatus" id="invoiceStatus">
+                    <input value={newJSON.invoiceID} onChange={updateInvoiceID} style={bgColor} id='invoiceID' type="text" required/>
+                    <label  htmlFor="invoiceStatus">Invoice Status</label>
+                    <select value={newJSON.invoiceStatus} onChange={updateInvoiceStatus} style={bgColor} name="invoiceStatus" id="invoiceStatus">
                         <option value="Draft">Draft</option>
                         <option value="Pending">Pending</option>
                     </select>
@@ -280,11 +301,11 @@ export default function NewInvoice(props){
                 <div className={styles.invoiceDateAndTerm}>
                     <div className={styles.labelInputPair}>
                         <label style={themeColor} htmlFor="invoiceDate">Invoice Date</label>
-                        <input style={dateTheme} id='invoiceDate' type="text" />
+                        <input style={dateTheme} placeholder={currentDateDisplay} id='invoiceDate' type="text" />
                     </div>
                     <div className={styles.labelInputPair}>
                         <label htmlFor="paymentTerms">Payment Terms</label>
-                        <select onClick={updatePaymentTerms} style={bgColor} name="paymentTerms" id="paymentTerms">
+                        <select value={newJSON.paymentTerms} onChange={updatePaymentTerms} style={bgColor} name="paymentTerms" id="paymentTerms">
                             <option style={bgColor} value='30'>30 Days</option>
                             <option style={bgColor} value='60'>60 Days</option>
                         </select>
