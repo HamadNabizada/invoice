@@ -17,18 +17,25 @@ let getFilteredInvoices = asyncHandler(async (req,res)=>{
     res.json(filteredInvoices)
 })
 
-let postInvoices = asyncHandler(async (req, res)=>{
+let createInvoice = asyncHandler(async (req, res)=>{
     await Invoice.create(req.body.newJSON)
     res.json('POST')
     
 })
-
-let putInvoices = asyncHandler(async (req, res)=>{
-    res.json(`PUT CONTROLLER ${req.params.id}`)
+let updateInvoice = asyncHandler(async (req, res)=>{
+    console.log(req.params.id)
+    let id = req.params.id
+    let selectedInvoice = await Invoice.findById(id)
+    res.json(selectedInvoice)
 })
 
 let deleteInvoices = asyncHandler(async (req, res)=>{
     res.json(`DELETE CONTROLLER ${req.params.id}`)
 })
 
-export {getInvoices, postInvoices,putInvoices,deleteInvoices, getFilteredInvoices}
+let getSingleInvoice = asyncHandler(async (req,res)=>{
+    let singleInvoice = await Invoice.findById(req.params.id)
+    res.json(singleInvoice)
+})
+
+export {getSingleInvoice, getInvoices, createInvoice,updateInvoice,deleteInvoices, getFilteredInvoices}

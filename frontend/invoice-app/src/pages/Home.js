@@ -4,10 +4,11 @@ import {useEffect, useState} from 'react'
 import light from '../assets/light.svg'
 import dark from '../assets/dark.svg'
 import NewInvoiceModal from '../components/NewInvoiceModal'
+import {useNavigate} from 'react-router-dom'
 
 export default function Home(){
     let [isNewInvoiceModalActive, setNewInvoiceModalActive] = useState(false)
-
+    let navigate = useNavigate()
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
     }
@@ -107,6 +108,11 @@ export default function Home(){
         let dueDateFormatted = `Due ${dateDay} ${months[dateMonth-1]} ${dateYear}`
         return dueDateFormatted
     }
+    function goToID(e){
+        let index = e.target.id
+        let newNavigation = allInvoices[index]._id
+        navigate(newNavigation)
+    }
     function createInvoicesElements(){
         let invoicesArray = allInvoices.map((invoice,index)=>{
             let dueDate = 'Due'
@@ -124,13 +130,13 @@ export default function Home(){
                 classStyle = style.invoiceStatusPaid
             }
             return(
-                <h2 key={index} style={styleTheme.subBG} className={style.invoice}>
-                    <p className={style.invoiceID}>{invoice.invoiceID}</p>
-                    <p style={styleTheme.minorText} className={style.invoiceDue}>{dueDate}</p>
-                    <p style={styleTheme.mainText} className={style.invoiceOwner}>{invoice.billTo.clientName}</p>
-                    <p className={style.invoiceCost}>{invoice.totalInvoice}</p>
-                    <p className={classStyle}>&#x2022; {invoice.invoiceStatus}</p>
-                    <p className={style.rightArrow}>&#8250;</p>
+                <h2 onClick={goToID} id={index} key={index} style={styleTheme.subBG} className={style.invoice}>
+                    <p id={index} className={style.invoiceID}>{invoice.invoiceID}</p>
+                    <p id={index} style={styleTheme.minorText} className={style.invoiceDue}>{dueDate}</p>
+                    <p id={index} style={styleTheme.mainText} className={style.invoiceOwner}>{invoice.billTo.clientName}</p>
+                    <p id={index} className={style.invoiceCost}>{invoice.totalInvoice}</p>
+                    <p id={index} className={classStyle}>&#x2022; {invoice.invoiceStatus}</p>
+                    <p id={index} className={style.rightArrow}>&#8250;</p>
                 </h2>
             )
         })
@@ -154,10 +160,8 @@ export default function Home(){
         setAllInvoices(data)
     }
     useEffect(()=>{
-        console.log(filter)
         filterInvoicesAPICall()
     },[filter])
-    
     return(
         <div style={styleTheme.layout} className={style.layoutContainer}>
             <Nav 

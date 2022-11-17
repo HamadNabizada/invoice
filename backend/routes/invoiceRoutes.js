@@ -1,14 +1,15 @@
 import express from 'express'
-import {getInvoices,postInvoices,putInvoices,deleteInvoices,
-    getFilteredInvoices} from '../controllers/invoiceController.js'
+import {getInvoices,createInvoice,updateInvoice,deleteInvoices,
+    getFilteredInvoices, getSingleInvoice} from '../controllers/invoiceController.js'
 let router = express.Router()
 
 router.get('/', getInvoices)
 router.post('/', getFilteredInvoices)
 
-router.post('/createNewInvoice', postInvoices)
+router.post('/createNewInvoice', createInvoice)
 
-router.put('/:id', putInvoices)
+router.get('/:id', getSingleInvoice)
+router.put('/:id', updateInvoice)
 
 router.delete('/:id', deleteInvoices)
 

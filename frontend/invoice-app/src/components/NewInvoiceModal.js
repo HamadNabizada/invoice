@@ -5,7 +5,6 @@ import {useState, useRef, useEffect} from 'react'
 
 
 export default function NewInvoice(props){
-
     let firstRender = useRef(true)
     let bgColor = {
         backgroundColor: props.theme.subBG.backgroundColor,
@@ -173,7 +172,7 @@ export default function NewInvoice(props){
                 <input required value={newJSON.itemList[i].itemQty}  data-listindex={i} id='itemQty' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
                 <input required value={newJSON.itemList[i].itemPrice} data-listindex={i} id='itemPrice' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
                 <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{newJSON.itemList[i].listItemTotalFormatted}</p>
-                <div data-listindex={i} className={styles.trashIcon}><img src={trashIcon} alt="remove item" /></div>
+                {/* <div data-listindex={i} className={styles.trashIcon}><img src={trashIcon} alt="remove item" /></div> */}
             </div>
         )
         itemLineElementsArray.push(singleItemLineElement)
@@ -190,10 +189,11 @@ export default function NewInvoice(props){
             return updatedJSON
         })
     }
+
     function handleSubmit(e){
         e.preventDefault()
         submitToAPI()
-        window.location.reload();
+        window.location.reload()
     }
     let submitToAPI = async ()=>{
         let apiCall = await fetch('http://localhost:8000/createNewInvoice',{
