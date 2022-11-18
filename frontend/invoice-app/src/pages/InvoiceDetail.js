@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import light from '../assets/light.svg'
 import dark from '../assets/dark.svg'
 import {useParams,useNavigate} from 'react-router-dom'
+import EditInvoiceModal from '../components/EditInvoiceModal.js'
 
 export default function InvoiceDetail(){
     let initialStatusPaid = useRef(false)
@@ -12,7 +13,12 @@ export default function InvoiceDetail(){
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
     let toggleTheme = ()=>{
-        setLightMode(prevMode =>!prevMode)
+        setUser(prevUser =>{
+            return{
+                ...prevUser,
+                lightMode: !lightMode
+            }
+        })
     }
     let lightTheme = {
         textColor: '#000000',
@@ -49,6 +55,32 @@ export default function InvoiceDetail(){
             boxShadow: currentTheme.shadow
         }
     }
+    let [user, setUser] = useState({
+        name:"Name",
+        lightMode:true
+    })
+    useEffect(()=>{
+       async function fetchUser(){
+            let apiCall = await fetch(`http://localhost:8000/profiles/users/ExampleUser`)
+            let data = await apiCall.json()
+            setUser(data)
+        }
+       fetchUser()  
+    },[])
+    let updateUserTheme = async ()=>{
+        let apiCall = await fetch('http://localhost:8000/profiles/users/ExampleUser/',{
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({...user})
+        })
+        let data = await apiCall.json()
+    }
+    useEffect(()=>{
+        setLightMode(user.lightMode)
+        if(user._id){
+            updateUserTheme()
+        }
+    },[user])
 
     let navigate = useNavigate()
 
@@ -171,13 +203,25 @@ export default function InvoiceDetail(){
             lineItemElem
         )
     })
-    
+    let [isEditModalActive, setIsEditModalActive] = useState(false)
+    function editInvoice(){
+        setIsEditModalActive(true)
+    }
+    function handleCancel(){
+        setIsEditModalActive(false)
+    }
 
     return(
         <div style={styleTheme.layout} className={styles.layout}>
             <Nav 
                 handleClick={toggleTheme}
                 theme = {theme}
+            />
+            <EditInvoiceModal 
+                isActive = {isEditModalActive}
+                theme = {styleTheme}
+                invoiceId = {id}
+                handleCancel = {handleCancel}
             />
             <main style={styleTheme.layout} className={styles.InvoiceDetailContainer}>
                 <div style={styleTheme.main} className={styles.invoiceWrapper}>
@@ -191,7 +235,7 @@ export default function InvoiceDetail(){
                             <p className={classStyle}>{invoice.invoiceStatus}</p>
                         </div>
                         <div className={styles.buttonsContainer}>
-                            <div className={styles.buttonStyle}>Edit</div>
+                            <div onClick={editInvoice} className={styles.buttonStyle}>Edit</div>
                             <div onClick={deleteInvoice} className={styles.buttonStyle}>Delete</div>
                             <div onClick={markAsPaid} className={styles.buttonStyle}>Mark as Paid</div>
                         </div>

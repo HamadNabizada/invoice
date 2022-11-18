@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import invoiceRoutes from './routes/invoiceRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import connectDB from './config/db.js'
 import cors from 'cors'
 
@@ -15,6 +16,7 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use('/', invoiceRoutes)
+app.use('/profiles/users', userRoutes)
 
 app.listen(port, (error)=>{
     if(!error){

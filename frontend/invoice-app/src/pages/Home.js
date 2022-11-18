@@ -12,6 +12,10 @@ export default function Home(){
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
     }
+    let [user, setUser] = useState({
+        name:"Name",
+        lightMode:true
+    })
     let [allInvoices, setAllInvoices] = useState([{
         "invoiceID": '',
         "billFrom": {
@@ -43,17 +47,35 @@ export default function Home(){
     }])
     useEffect(()=>{
       async function fetchData(){
-        let apiCall = await fetch('http://localhost:8000/')
-        let data = await apiCall.json()
-        setAllInvoices(data)
-       }
-       fetchData()    
+            let apiCall = await fetch('http://localhost:8000/')
+            let data = await apiCall.json()
+            setAllInvoices(data)
+        }
+       async function fetchUser(){
+            let apiCall = await fetch(`http://localhost:8000/profiles/users/ExampleUser`)
+            let data = await apiCall.json()
+            setUser(data)
+        }
+       fetchData()  
+       fetchUser()  
     },[])
-
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
+    let updateUserTheme = async ()=>{
+        let apiCall = await fetch('http://localhost:8000/profiles/users/ExampleUser/',{
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({...user})
+        })
+        let data = await apiCall.json()
+    }
     let toggleTheme = ()=>{
-        setLightMode(prevMode =>!prevMode)
+        setUser(prevUser =>{
+            return{
+                ...prevUser,
+                lightMode: !lightMode
+            }
+        })
     }
     let lightTheme = {
         textColor: '#000000',
@@ -113,6 +135,12 @@ export default function Home(){
         let newNavigation = allInvoices[index]._id
         navigate(newNavigation)
     }
+    useEffect(()=>{
+        setLightMode(user.lightMode)
+        if(user._id){
+            updateUserTheme()
+        }
+    },[user])
     function createInvoicesElements(){
         let invoicesArray = allInvoices.map((invoice,index)=>{
             let dueDate = 'Due'

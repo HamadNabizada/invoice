@@ -11,7 +11,7 @@ export default function Nav(props){
             </div>
             <div className={styles.middleNav}>
                 <div className={styles.themeContainer}>
-                    <img onClick={props.handleClick} className={styles.theme} src={props.theme} alt='color theme toggle' />
+                    {/* <img onClick={props.handleClick} className={styles.theme} src={props.theme} alt='color theme toggle' /> */}
                 </div>
             </div>
             <div className={styles.userIconContainer}>

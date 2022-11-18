@@ -25,7 +25,7 @@ let createInvoice = asyncHandler(async (req, res)=>{
 let updateInvoice = asyncHandler(async (req, res)=>{
     let id = req.params.id
     let selectedInvoice = await Invoice.findByIdAndUpdate(id,req.body)
-    res.json(selectedInvoice)
+    res.json('update')
 })
 
 let deleteInvoices = asyncHandler(async (req, res)=>{
@@ -37,5 +37,7 @@ let getSingleInvoice = asyncHandler(async (req,res)=>{
     let singleInvoice = await Invoice.findById(req.params.id)
     res.json(singleInvoice)
 })
+
+
 
 export {getSingleInvoice, getInvoices, createInvoice,updateInvoice,deleteInvoices, getFilteredInvoices}
