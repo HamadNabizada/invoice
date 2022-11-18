@@ -250,3 +250,9 @@ input::-webkit-inner-spin-button {
         flex-wrap: wrap;
     }
 }
+
+@media screen and (max-width:500px){
+    .newInvoiceModalInactive{
+        left: -250vw;
+    }
+}

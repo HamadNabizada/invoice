@@ -189,7 +189,6 @@ export default function NewInvoice(props){
             return updatedJSON
         })
     }
-
     function handleSubmit(e){
         e.preventDefault()
         submitToAPI()

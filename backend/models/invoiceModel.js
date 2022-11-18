@@ -24,9 +24,11 @@ let invoiceSchema = mongoose.Schema({
         'itemName':String,
         'itemQty':Number,
         'itemPrice':Number,
-        'itemLineTotal':Number
+        'listItemTotal':Number,
+        'listItemTotalFormatted': String
     }],
     'totalInvoice':Number,
+    'totalInvoiceFormatted':String,
     'invoiceStatus':String
 })
 
