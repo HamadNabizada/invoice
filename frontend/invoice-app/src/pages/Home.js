@@ -162,7 +162,7 @@ export default function Home(){
                     <p id={index} className={style.invoiceID}>{invoice.invoiceID}</p>
                     <p id={index} style={styleTheme.minorText} className={style.invoiceDue}>{dueDate}</p>
                     <p id={index} style={styleTheme.mainText} className={style.invoiceOwner}>{invoice.billTo.clientName}</p>
-                    <p id={index} className={style.invoiceCost}>{invoice.totalInvoice}</p>
+                    <p id={index} className={style.invoiceCost}>{`${invoice.totalInvoiceFormatted}`}</p>
                     <p id={index} className={classStyle}>&#x2022; {invoice.invoiceStatus}</p>
                     <p id={index} className={style.rightArrow}>&#8250;</p>
                 </h2>
