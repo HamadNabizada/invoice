@@ -66,6 +66,13 @@
     align-items: center;
     border:1px solid black;
 }
+.buttonStyle:active{
+    filter: brightness(50%);
+}
+.buttonStyle:hover{
+    cursor: pointer;
+    opacity: .7;
+}
 .buttonStyle:first-child{
     background-color: #959dda;
 }

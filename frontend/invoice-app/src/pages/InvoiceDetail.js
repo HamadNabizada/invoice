@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import styles from '../styles/InvoiceDetail.module.css'
 import Nav from '../components/Nav'
 import light from '../assets/light.svg'
@@ -6,6 +6,8 @@ import dark from '../assets/dark.svg'
 import {useParams,useNavigate} from 'react-router-dom'
 
 export default function InvoiceDetail(){
+    let initialStatusPaid = useRef(false)
+    let isFirstRender = useRef(true)
     let {id} = useParams()
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
@@ -53,7 +55,24 @@ export default function InvoiceDetail(){
     function goHome(){
         navigate('/')
     }
-
+    function markAsPaid(){
+        setInvoice(prevInvoice=>{
+            return {
+                ...prevInvoice,
+                invoiceStatus: 'Paid'
+            }
+        })
+    }
+    async function updateInvoice(){
+        let apiCall = await fetch(`http://localhost:8000/${id}`,{
+            method:'PUT',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({...invoice})
+        })
+        let data = await apiCall.json()
+    }
     let [invoice, setInvoice] = useState({
         "billFrom": {
             "street": "x",
@@ -84,15 +103,37 @@ export default function InvoiceDetail(){
             }
         ],
         "totalInvoice": 1,
-        "invoiceStatus": "Draft",
+        "invoiceStatus": "1",
         "__v": 0
     })
-
+    async function deleteInvoice(){
+        let apiCall = await fetch(`http://localhost:8000/${id}`,{
+            method:'DELETE'
+        })
+        let data = await apiCall.json()
+        console.log(data);
+        navigate('/')
+    }
     async function getInvoice(){
         let apiCall = await fetch(`http://localhost:8000/${id}`)
         let data = await apiCall.json()
         setInvoice(data)
     }
+    useEffect(()=>{
+        if(isFirstRender.current){
+            isFirstRender.current = false
+            if(invoice.invoiceStatus==='Paid'){
+                initialStatusPaid.current = true
+            }
+        }
+    },[invoice])
+    useEffect(()=>{
+        if(!initialStatusPaid.current){
+            if(invoice.invoiceStatus === 'Paid'){
+                updateInvoice()
+            }
+        }
+    },[invoice])
     useEffect(()=>{
         getInvoice()
     },[])
@@ -151,8 +192,8 @@ export default function InvoiceDetail(){
                         </div>
                         <div className={styles.buttonsContainer}>
                             <div className={styles.buttonStyle}>Edit</div>
-                            <div className={styles.buttonStyle}>Delete</div>
-                            <div className={styles.buttonStyle}>Mark as Paid</div>
+                            <div onClick={deleteInvoice} className={styles.buttonStyle}>Delete</div>
+                            <div onClick={markAsPaid} className={styles.buttonStyle}>Mark as Paid</div>
                         </div>
                     </div>
                     <div style={styleTheme.subBG} className={styles.invoicesDetailsSubContainer}>

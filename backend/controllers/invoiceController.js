@@ -23,13 +23,13 @@ let createInvoice = asyncHandler(async (req, res)=>{
     
 })
 let updateInvoice = asyncHandler(async (req, res)=>{
-    console.log(req.params.id)
     let id = req.params.id
-    let selectedInvoice = await Invoice.findById(id)
+    let selectedInvoice = await Invoice.findByIdAndUpdate(id,req.body)
     res.json(selectedInvoice)
 })
 
 let deleteInvoices = asyncHandler(async (req, res)=>{
+    let deletedInvoice = await Invoice.findByIdAndDelete(req.params.id)
     res.json(`DELETE CONTROLLER ${req.params.id}`)
 })
 
