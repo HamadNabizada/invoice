@@ -1,10 +1,12 @@
 import styles from '../styles/NewInvoiceModal.module.css'
 import trashIcon from '../assets/trash.svg'
 import {useState, useRef, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 
 
 export default function EditInvoice(props){
+    let navigate = useNavigate()
     let firstRender = useRef(true)
     let styleTheme = {
         layout:{
@@ -210,7 +212,8 @@ export default function EditInvoice(props){
     function handleSubmit(e){
         e.preventDefault()
         submitToAPI()
-        window.location.reload()
+        let navString = `/${props.invoiceId}`
+        navigate('/')
     }
     let submitToAPI = async ()=>{
         let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${props.invoiceId}`,{
