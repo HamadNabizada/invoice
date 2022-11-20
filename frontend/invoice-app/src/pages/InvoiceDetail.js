@@ -1,86 +1,32 @@
 import {useState, useEffect, useRef} from 'react'
 import styles from '../styles/InvoiceDetail.module.css'
 import Nav from '../components/Nav'
-import light from '../assets/light.svg'
-import dark from '../assets/dark.svg'
 import {useParams,useNavigate} from 'react-router-dom'
 import EditInvoiceModal from '../components/EditInvoiceModal.js'
 
-export default function InvoiceDetail(){
+export default function InvoiceDetail(props){
     let initialStatusPaid = useRef(false)
     let isFirstRender = useRef(true)
     let {id} = useParams()
-    let [lightMode, setLightMode] = useState(true)
-    let theme = lightMode ? light : dark
-    let toggleTheme = ()=>{
-        setUser(prevUser =>{
-            return{
-                ...prevUser,
-                lightMode: !lightMode
-            }
-        })
-    }
-    let lightTheme = {
-        textColor: '#000000',
-        minorTextColor: 'gray',
-        bgColor:'#f8f7fc',
-        minorBGColor:'#ffffff',
-        shadow: '1px 1px 5px gray'
-    }
-    let darkTheme = {
-        textColor: '#ffffff',
-        minorTextColor: 'lightgray',
-        bgColor:'#141625',
-        minorBGColor:'#1f203c',
-        shadow: '1px 1px 5px #1f203c'
-    }
-    let currentTheme = lightMode ? lightTheme : darkTheme
     let styleTheme = {
-        lightTheme: lightMode,
         layout:{
-            backgroundColor: currentTheme.bgColor
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
         },
         main:{
-            color: currentTheme.textColor,
-            backgroundColor: currentTheme.bgColor
+            color: props.lightMode ? '#000000' : '#ffffff',
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
         },
         mainText:{
-            color: currentTheme.textColor,
+            color: props.lightMode ? '#000000' : '#ffffff',
         },
         minorText:{
-            color: currentTheme.minorTextColor,
+            color: props.lightMode ? 'gray' : 'lightgray',
         },
         subBG:{
-            backgroundColor: currentTheme.minorBGColor,
-            boxShadow: currentTheme.shadow
+            backgroundColor: props.lightMode ?  '#ffffff' : '#1f203c',
+            boxShadow: props.lightMode ?  '1px 1px 5px gray' : '1px 1px 5px #1f203c'
         }
     }
-    let [user, setUser] = useState({
-        name:"Name",
-        lightMode:true
-    })
-    useEffect(()=>{
-       async function fetchUser(){
-            let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser`)
-            let data = await apiCall.json()
-            setUser(data)
-        }
-       fetchUser()  
-    },[])
-    let updateUserTheme = async ()=>{
-        let apiCall = await fetch('https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser/',{
-            method:'PUT',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({...user})
-        })
-        let data = await apiCall.json()
-    }
-    useEffect(()=>{
-        setLightMode(user.lightMode)
-        if(user._id){
-            updateUserTheme()
-        }
-    },[user])
 
     let navigate = useNavigate()
 
@@ -143,7 +89,6 @@ export default function InvoiceDetail(){
             method:'DELETE'
         })
         let data = await apiCall.json()
-        console.log(data);
         navigate('/')
     }
     async function getInvoice(){
@@ -214,12 +159,12 @@ export default function InvoiceDetail(){
     return(
         <div style={styleTheme.layout} className={styles.layout}>
             <Nav 
-                handleClick={toggleTheme}
-                theme = {theme}
+             updateLightMode = {props.updateLightMode}
+             lightMode = {props.lightMode}
             />
             <EditInvoiceModal 
                 isActive = {isEditModalActive}
-                theme = {styleTheme}
+                lightMode = {props.lightMode}
                 invoiceId = {id}
                 handleCancel = {handleCancel}
             />

@@ -1,6 +1,9 @@
 import styles from '../styles/Nav.module.css'
 import logo from '../assets/logo.svg'
 import userIcon from '../assets/userIcon.svg'
+import light from '../assets/light.svg'
+import dark from '../assets/dark.svg'
+
 
 export default function Nav(props){
 
@@ -11,7 +14,7 @@ export default function Nav(props){
             </div>
             <div className={styles.middleNav}>
                 <div className={styles.themeContainer}>
-                    {/* <img onClick={props.handleClick} className={styles.theme} src={props.theme} alt='color theme toggle' /> */}
+                    <img onClick={props.updateLightMode} className={styles.theme} src={props.lightMode ? light : dark} alt='color theme toggle' />
                 </div>
             </div>
             <div className={styles.userIconContainer}>

@@ -6,17 +6,36 @@ import {useState, useRef, useEffect} from 'react'
 
 export default function NewInvoice(props){
     let firstRender = useRef(true)
+    let styleTheme = {
+        layout:{
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
+        },
+        main:{
+            color: props.lightMode ? '#000000' : '#ffffff',
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
+        },
+        mainText:{
+            color: props.lightMode ? '#000000' : '#ffffff',
+        },
+        minorText:{
+            color: props.lightMode ? 'gray' : 'lightgray',
+        },
+        subBG:{
+            backgroundColor: props.lightMode ?  '#ffffff' : '#1f203c',
+            boxShadow: props.lightMode ?  '1px 1px 5px gray' : '1px 1px 5px #1f203c'
+        }
+    }
     let bgColor = {
-        backgroundColor: props.theme.subBG.backgroundColor,
-        border: props.theme.lightTheme ? '1px solid darkgray':'1px solid gray',
-        caretColor: props.theme.lightTheme ? 'black':'white',
-        color: props.theme.lightTheme ? 'black':'white'
+        backgroundColor: props.lightMode ?  '#ffffff' : '#1f203c',
+        border: props.lightMode ? '1px solid darkgray':'1px solid gray',
+        caretColor: props.lightMode ? 'black':'white',
+        color: props.lightMode ? 'black':'white'
     }
     let themeColor = {
-       color: props.theme.lightTheme ?  'rgba(0,0,0,.75)':'rgba(255,255,255,.55)'
+       color: props.lightMode ?  'rgba(0,0,0,.75)':'rgba(255,255,255,.55)'
     }
     let dateTheme = {
-        backgroundColor: props.theme.lightTheme ?  'rgba(0,0,0,.25)':'rgba(255,255,255,.75)'
+        backgroundColor: props.lightMode ?  'rgba(0,0,0,.25)':'rgba(255,255,255,.75)'
     }
     let currentDate = new Date
     let paymentDue = new Date()
@@ -52,16 +71,6 @@ export default function NewInvoice(props){
         'invoiceStatus':'Draft',
         'test':'test1'
     })
-   
-    let [itemLineCounter, setItemLineCounter] = useState(1)
-    let itemListObj = {
-        'itemName':'',
-        'itemQty':'0',
-        'itemPrice':'0',
-        'itemLineTotal':'0'
-    }
-    let itemListArray = [itemListObj]
-    let [itemList, setItemList] = useState(itemListArray)
     function updateInvoiceStatus(e){
         setJSON(prevJSON=>{
             return {
@@ -211,7 +220,7 @@ export default function NewInvoice(props){
         setCurrentDateDisplay(displayDate(newJSON.invoiceDate))
     })
     return (
-        <div style={props.theme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
+        <div style={styleTheme.main} className={props.isActive ? styles.newInvoiceModalContainer:styles.newInvoiceModalInactive}>
             <h3>New Invoice</h3>
             <form onSubmit={handleSubmit} className={styles.newInvoiceForm}>
                 <div className={styles.labelInputPair}>

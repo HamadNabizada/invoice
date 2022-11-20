@@ -1,21 +1,15 @@
 import Nav from '../components/Nav'
 import style from '../styles/Home.module.css'
 import {useEffect, useState} from 'react'
-import light from '../assets/light.svg'
-import dark from '../assets/dark.svg'
 import NewInvoiceModal from '../components/NewInvoiceModal'
 import {useNavigate} from 'react-router-dom'
 
-export default function Home(){
+export default function Home(props){
     let [isNewInvoiceModalActive, setNewInvoiceModalActive] = useState(false)
     let navigate = useNavigate()
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
     }
-    let [user, setUser] = useState({
-        name:"Name",
-        lightMode:true
-    })
     let [allInvoices, setAllInvoices] = useState([{
         "invoiceID": '',
         "billFrom": {
@@ -51,65 +45,26 @@ export default function Home(){
             let data = await apiCall.json()
             setAllInvoices(data)
         }
-       async function fetchUser(){
-            let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser`)
-            let data = await apiCall.json()
-            setUser(data)
-        }
        fetchData()  
-       fetchUser()  
     },[])
-    let [lightMode, setLightMode] = useState(true)
-    let theme = lightMode ? light : dark
-    let updateUserTheme = async ()=>{
-        let apiCall = await fetch('https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser/',{
-            method:'PUT',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({...user})
-        })
-        let data = await apiCall.json()
-    }
-    let toggleTheme = ()=>{
-        setUser(prevUser =>{
-            return{
-                ...prevUser,
-                lightMode: !lightMode
-            }
-        })
-    }
-    let lightTheme = {
-        textColor: '#000000',
-        minorTextColor: 'gray',
-        bgColor:'#f8f7fc',
-        minorBGColor:'#ffffff',
-        shadow: '1px 1px 5px gray'
-    }
-    let darkTheme = {
-        textColor: '#ffffff',
-        minorTextColor: 'lightgray',
-        bgColor:'#141625',
-        minorBGColor:'#1f203c',
-        shadow: '1px 1px 5px #1f203c'
-    }
-    let currentTheme = lightMode ? lightTheme : darkTheme
+
     let styleTheme = {
-        lightTheme: lightMode,
         layout:{
-            backgroundColor: currentTheme.bgColor
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
         },
         main:{
-            color: currentTheme.textColor,
-            backgroundColor: currentTheme.bgColor
+            color: props.lightMode ? '#000000' : '#ffffff',
+            backgroundColor: props.lightMode ?  '#f8f7fc' : '#141625'
         },
         mainText:{
-            color: currentTheme.textColor,
+            color: props.lightMode ? '#000000' : '#ffffff',
         },
         minorText:{
-            color: currentTheme.minorTextColor,
+            color: props.lightMode ? 'gray' : 'lightgray',
         },
         subBG:{
-            backgroundColor: currentTheme.minorBGColor,
-            boxShadow: currentTheme.shadow
+            backgroundColor: props.lightMode ?  '#ffffff' : '#1f203c',
+            boxShadow: props.lightMode ?  '1px 1px 5px gray' : '1px 1px 5px #1f203c'
         }
     }
     function createNewInvoice(){
@@ -135,12 +90,7 @@ export default function Home(){
         let newNavigation = allInvoices[index]._id
         navigate(newNavigation)
     }
-    useEffect(()=>{
-        setLightMode(user.lightMode)
-        if(user._id){
-            updateUserTheme()
-        }
-    },[user])
+
     function createInvoicesElements(){
         let invoicesArray = allInvoices.map((invoice,index)=>{
             let dueDate = 'Due'
@@ -173,7 +123,7 @@ export default function Home(){
     let [invoicesElement,setInvoicesElement] = useState(createInvoicesElements)
     useEffect(()=>{
         setInvoicesElement(createInvoicesElements)
-    }, [allInvoices,lightMode])
+    }, [allInvoices,props.lightMode])
     let [filter, setFilter]=useState('All')
     function updateFilter(e){
         setFilter(e.target.value)
@@ -193,12 +143,12 @@ export default function Home(){
     return(
         <div style={styleTheme.layout} className={style.layoutContainer}>
             <Nav 
-             handleClick={toggleTheme}
-             theme = {theme}
+             updateLightMode = {props.updateLightMode}
+             lightMode = {props.lightMode}
             />
             <NewInvoiceModal 
                 isActive = {isNewInvoiceModalActive}
-                theme = {styleTheme}
+                lightMode = {props.lightMode}
                 handleCancel = {cancelNewInvoice}
             />
             <main style={styleTheme.main} className={`${style.mainHome} ${modalStyles.main}`}>
