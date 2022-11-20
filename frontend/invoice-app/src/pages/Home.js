@@ -47,12 +47,12 @@ export default function Home(){
     }])
     useEffect(()=>{
       async function fetchData(){
-            let apiCall = await fetch('http://localhost:8000/')
+            let apiCall = await fetch('https://invoice-production-a876.up.railway.app/')
             let data = await apiCall.json()
             setAllInvoices(data)
         }
        async function fetchUser(){
-            let apiCall = await fetch(`http://localhost:8000/profiles/users/ExampleUser`)
+            let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser`)
             let data = await apiCall.json()
             setUser(data)
         }
@@ -62,7 +62,7 @@ export default function Home(){
     let [lightMode, setLightMode] = useState(true)
     let theme = lightMode ? light : dark
     let updateUserTheme = async ()=>{
-        let apiCall = await fetch('http://localhost:8000/profiles/users/ExampleUser/',{
+        let apiCall = await fetch('https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser/',{
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({...user})
@@ -179,7 +179,7 @@ export default function Home(){
         setFilter(e.target.value)
     }
     async function filterInvoicesAPICall(){
-        let apiPOST = await fetch('http://localhost:8000/',{
+        let apiPOST = await fetch('https://invoice-production-a876.up.railway.app/',{
             method:'POST',
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({filter})

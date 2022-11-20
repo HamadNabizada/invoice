@@ -194,7 +194,7 @@ export default function EditInvoice(props){
         window.location.reload()
     }
     let submitToAPI = async ()=>{
-        let apiCall = await fetch(`http://localhost:8000/${props.invoiceId}`,{
+        let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${props.invoiceId}`,{
             method:'PUT',
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({...newJSON})
@@ -211,7 +211,7 @@ export default function EditInvoice(props){
         // setCurrentDateDisplay(displayDate(newJSON.invoiceDate))
     })
     async function getInvoice(){
-        let apiCall = await fetch(`http://localhost:8000/${props.invoiceId}`)
+        let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${props.invoiceId}`)
         let data = await apiCall.json()
         setJSON(data)
     }

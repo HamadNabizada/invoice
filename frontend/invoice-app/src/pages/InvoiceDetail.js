@@ -61,14 +61,14 @@ export default function InvoiceDetail(){
     })
     useEffect(()=>{
        async function fetchUser(){
-            let apiCall = await fetch(`http://localhost:8000/profiles/users/ExampleUser`)
+            let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser`)
             let data = await apiCall.json()
             setUser(data)
         }
        fetchUser()  
     },[])
     let updateUserTheme = async ()=>{
-        let apiCall = await fetch('http://localhost:8000/profiles/users/ExampleUser/',{
+        let apiCall = await fetch('https://invoice-production-a876.up.railway.app/profiles/users/ExampleUser/',{
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({...user})
@@ -96,7 +96,7 @@ export default function InvoiceDetail(){
         })
     }
     async function updateInvoice(){
-        let apiCall = await fetch(`http://localhost:8000/${id}`,{
+        let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${id}`,{
             method:'PUT',
             headers:{
                 'Content-Type':'application/json'
@@ -139,7 +139,7 @@ export default function InvoiceDetail(){
         "__v": 0
     })
     async function deleteInvoice(){
-        let apiCall = await fetch(`http://localhost:8000/${id}`,{
+        let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${id}`,{
             method:'DELETE'
         })
         let data = await apiCall.json()
@@ -147,7 +147,7 @@ export default function InvoiceDetail(){
         navigate('/')
     }
     async function getInvoice(){
-        let apiCall = await fetch(`http://localhost:8000/${id}`)
+        let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${id}`)
         let data = await apiCall.json()
         setInvoice(data)
     }
