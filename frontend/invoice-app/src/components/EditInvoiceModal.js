@@ -212,8 +212,10 @@ export default function EditInvoice(props){
     function handleSubmit(e){
         e.preventDefault()
         submitToAPI()
-        let navString = `/${props.invoiceId}`
-        navigate('/')
+        window.location.reload()
+        // let navString = `/${props.invoiceId}`
+
+        // navigate(navString)
     }
     let submitToAPI = async ()=>{
         let apiCall = await fetch(`https://invoice-production-a876.up.railway.app/${props.invoiceId}`,{
