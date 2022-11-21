@@ -6,6 +6,7 @@ import {useNavigate} from 'react-router-dom'
 
 export default function Home(props){
     let [isNewInvoiceModalActive, setNewInvoiceModalActive] = useState(false)
+    let [render, setRender] = useState(0)
     let navigate = useNavigate()
     let modalStyles = { 
         main: isNewInvoiceModalActive ? style.modalActiveMain : ''
@@ -46,7 +47,7 @@ export default function Home(props){
             setAllInvoices(data)
         }
        fetchData()  
-    },[])
+    },[render])
 
     let styleTheme = {
         layout:{
@@ -72,6 +73,7 @@ export default function Home(props){
     }
     function cancelNewInvoice(){
         setNewInvoiceModalActive(false)
+        setRender(prev=>prev+1)
     }
     document.body.style.backgroundColor = styleTheme.layout.backgroundColor
     function formatDueDate(string){

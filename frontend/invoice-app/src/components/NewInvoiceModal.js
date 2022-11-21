@@ -1,10 +1,12 @@
 import styles from '../styles/NewInvoiceModal.module.css'
 import trashIcon from '../assets/trash.svg'
 import {useState, useRef, useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
 export default function NewInvoice(props){
+    let navigate = useNavigate()
     let firstRender = useRef(true)
     let styleTheme = {
         layout:{
@@ -201,8 +203,11 @@ export default function NewInvoice(props){
     function handleSubmit(e){
         e.preventDefault()
         submitToAPI()
-        window.location.reload()
+        setTimeout(()=>{
+            navigate('/')
+        }, 1000)
     }
+
     let submitToAPI = async ()=>{
         let apiCall = await fetch('https://invoice-production-a876.up.railway.app/createNewInvoice',{
             method:'POST',
@@ -210,6 +215,10 @@ export default function NewInvoice(props){
             body: JSON.stringify({newJSON})
         })
         let data = await apiCall.json()
+        props.handleCancel()
+        setTimeout(()=>{
+            navigate('/')
+        },1000)
     }
     function displayDate(date){
         return `${date.getMonth()}-${date.getDate()}-${date.getYear()}`
