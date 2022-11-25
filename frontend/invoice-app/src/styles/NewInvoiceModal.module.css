@@ -158,10 +158,12 @@ input::-webkit-inner-spin-button {
 .trashIcon>img{
     height:1.2rem;
     cursor: pointer;
+    pointer-events:none;
 }
-.trashIcon>img:hover{
+.trashIcon:hover{
     opacity: .7;
     transition: all .2s;
+    cursor: pointer;
 }
 
 .addNewItemBtn{

@@ -174,6 +174,26 @@ export default function NewInvoice(props){
             }
         })
     }  
+    function removeItemLine(e){
+        if(newJSON.itemList.length === 1){
+            alert('Cannot have 0 items in list!')
+            return
+        }
+        let listIndex =  parseInt(e.target.getAttribute('data-listIndex'))
+        let list = [...newJSON.itemList]
+        let newList =[]
+        for (let index = 0; index < list.length; index++) {
+            const item = list[index];
+            if(index !== listIndex) newList.push(item)    
+        }
+        setJSON( prevJSON =>{
+            return {
+                ...prevJSON,
+                itemList: newList
+            }
+        })
+        
+    }
     let itemLineElementsArray = []
     console.log(newJSON)
     newJSON.itemList.forEach((listItem,i) => {
@@ -183,7 +203,7 @@ export default function NewInvoice(props){
                 <input required value={newJSON.itemList[i].itemQty}  data-listindex={i} id='itemQty' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
                 <input required value={newJSON.itemList[i].itemPrice} data-listindex={i} id='itemPrice' onChange={updateItemList} className={styles.itemTextStyle} style={bgColor} type="number" />
                 <p data-listindex={i} id='itemTextPrice' className={styles.itemTextPrice}>{newJSON.itemList[i].listItemTotalFormatted}</p>
-                {/* <div data-listindex={i} className={styles.trashIcon}><img src={trashIcon} alt="remove item" /></div> */}
+                <div onClick={removeItemLine} data-listindex={i} className={styles.trashIcon}><img className={styles.trashIcon} src={trashIcon} alt="remove item" /></div>
             </div>
         )
         itemLineElementsArray.push(singleItemLineElement)
