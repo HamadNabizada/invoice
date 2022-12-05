@@ -39,5 +39,4 @@ let getSingleInvoice = asyncHandler(async (req,res)=>{
 })
 
 
-
 export {getSingleInvoice, getInvoices, createInvoice,updateInvoice,deleteInvoices, getFilteredInvoices}

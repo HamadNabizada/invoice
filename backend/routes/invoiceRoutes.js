@@ -7,10 +7,11 @@ router.get('/', getInvoices)
 router.post('/', getFilteredInvoices)
 
 router.post('/createNewInvoice', createInvoice)
+router.delete('/:id', deleteInvoices)
+
+
 
 router.get('/:id', getSingleInvoice)
 router.put('/:id', updateInvoice)
-
-router.delete('/:id', deleteInvoices)
 
 export default router
