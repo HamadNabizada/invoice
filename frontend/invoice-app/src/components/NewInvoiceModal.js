@@ -195,7 +195,6 @@ export default function NewInvoice(props){
         
     }
     let itemLineElementsArray = []
-    console.log(newJSON)
     newJSON.itemList.forEach((listItem,i) => {
         let singleItemLineElement = (
             <div key={i} className={styles.singleItemLine}>

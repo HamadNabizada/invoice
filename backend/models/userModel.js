@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
 let userSchema = mongoose.Schema({
-    name:String,
-    lightMode:Boolean
+    email: {
+        type:String,
+        unique: true
+    },
+    password:String
 })
 
 export default mongoose.model('User',userSchema)

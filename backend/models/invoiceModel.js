@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 let invoiceSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref:'User'
+    },
     "invoiceID": String,
     "billFrom": {
         'street': String,

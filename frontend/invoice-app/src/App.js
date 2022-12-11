@@ -1,6 +1,7 @@
 import {Route, Routes} from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import InvoiceDetail from './pages/InvoiceDetail'
 import {useState} from 'react'
 
@@ -17,7 +18,8 @@ function App() {
   
   return (
     <Routes>
-      <Route path='/auth/login' element={<Login updateLightMode={updateLightMode} lightMode={lightMode} />}/>
+      <Route path='/user/register' element={<Register updateLightMode={updateLightMode} lightMode={lightMode} />}/>
+      <Route path='/user/login' element={<Login updateLightMode={updateLightMode} lightMode={lightMode} />}/>
       <Route path='/' element={<Home updateLightMode={updateLightMode} lightMode={lightMode} />}/>
       <Route path='/:id' element={<InvoiceDetail updateLightMode={updateLightMode} lightMode={lightMode} />}/>
     </Routes>
