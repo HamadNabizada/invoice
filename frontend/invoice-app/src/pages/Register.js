@@ -34,9 +34,11 @@ export default function Register(props){
     let navigate = useNavigate()
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
+    let [formErrors, setFormErrors] = useState([])
 
     function submitRegister(e){
         e.preventDefault()
+        
         let postData = async ()=>{
             let apiCall = await fetch('http://localhost:8000/user/register',{
                 method: 'POST',
@@ -44,7 +46,23 @@ export default function Register(props){
                 body: JSON.stringify({email,password})
             })
             let data = await apiCall.json()
-            console.log(data);
+            console.log(data)
+            if(data[0].error){
+                setFormErrors(prevErrors => {
+                    let newErrors = data.map((item,index)=>{
+                        return {
+                            ...item,
+                            key:`newError${index}`
+                        }
+                    })
+                    return newErrors
+                })
+            }else{
+                setFormErrors([{error:'Account created successfully'},{error:'Redirecting in 3 seconds...'}])
+                setTimeout(() => {
+                    navigate('/')
+                }, 3000);
+            }
         } 
         postData()
     }
@@ -62,7 +80,12 @@ export default function Register(props){
     function logInBtn(){
         navigate('/user/login')
     }
-
+    
+    let errorsElem = formErrors.map(item=>{
+        return (
+            <h4>{item.error}</h4>
+        )
+    })
     return(
         <div style={styleTheme.layout} className={styles.layout}>
             <Nav 
@@ -72,20 +95,21 @@ export default function Register(props){
             <section style={styleTheme.main} className={styles.loginContainer}>
                 <div style={styleTheme.subBG} className={styles.formWrapper}>
                     <h1 className={styles.formTitle}>Register</h1>
+                    {errorsElem}
                     <form className={styles.formStyles} onSubmit={submitRegister}>
                         <div className={styles.labelInputWrapper}>
                             <label htmlFor="email">Email</label>
-                            <input onChange={updateEmail} value={email} style={bgColor} id='email' type="text" placeholder='Email'/>
+                            <input required onChange={updateEmail} value={email} style={bgColor} id='email' type="text" placeholder='Email'/>
                         </div>
                         <div className={styles.labelInputWrapper}>
                             <label htmlFor="password">Password</label>
-                            <input onChange={updatePassword} value={password} style={bgColor} id='password' placeholder='Password' type="text" />
+                            <input required onChange={updatePassword} value={password} style={bgColor} id='password' placeholder='Password' type="text" />
                         </div>
                         <button className={styles.loginBtn} type='submit'>Register</button>
                     </form>
                     <div className={styles.btnContainer}>
                         <button onClick={logInBtn} className={styles.homeBtn} type='button'>Log In</button>
-                        {/* <button onClick={homeButton} className={styles.homeBtn} type='button'>Go Home</button> */}
+                        <button onClick={homeButton} className={styles.homeBtn} type='button'>Go Home</button>
                     </div>
                 </div>
             </section>
