@@ -40,7 +40,7 @@ export default function Register(props){
         e.preventDefault()
         
         let postData = async ()=>{
-            let apiCall = await fetch('http://localhost:8000/user/register',{
+            let apiCall = await fetch('https://invoice-production-a876.up.railway.app/user/register',{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email,password})

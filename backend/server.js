@@ -4,17 +4,35 @@ import invoiceRoutes from './routes/invoiceRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import connectDB from './config/db.js'
 import cors from 'cors'
+import session from 'express-session'
+import passport from 'passport'
+import {myPassportAuth} from './config/passport.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 let port = process.env.PORT || 5000
 let app = express()
 connectDB()
+
 app.use(cors({
     origin:'*',
     credentials: true
 }))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}))
+app.use(cookieParser('keyboard cat'))
+myPassportAuth(passport)
+
+
+
 app.use('/user', userRoutes)
 app.use('/', invoiceRoutes)
 
