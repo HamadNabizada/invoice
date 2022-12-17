@@ -6,7 +6,7 @@ import connectDB from './config/db.js'
 import cors from 'cors'
 import session from 'express-session'
 import passport from 'passport'
-import {myPassportAuth} from './config/passport.js'
+
 import cookieParser from 'cookie-parser'
 
 dotenv.config()
@@ -29,7 +29,7 @@ app.use(session({
     cookie: { secure: true }
 }))
 app.use(cookieParser('keyboard cat'))
-myPassportAuth(passport)
+
 
 
 
