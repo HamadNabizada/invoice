@@ -42,8 +42,14 @@ export default function Home(props){
     }])
     useEffect(()=>{
       async function fetchData(){
-            let apiCall = await fetch('https://invoice-production-a876.up.railway.app/')
+            let apiCall = await fetch('http://localhost:8000/',{
+                method: 'GET',
+                credentials: 'include'
+            })
             let data = await apiCall.json()
+            if(data.redirect){
+                navigate(data.redirect)
+            }
             setAllInvoices(data)
         }
        fetchData()  

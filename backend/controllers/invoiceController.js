@@ -2,6 +2,9 @@ import asyncHandler from 'express-async-handler'
 import Invoice from '../models/invoiceModel.js'
 
 let getInvoices = asyncHandler(async (req, res)=>{
+    if(!req.isAuthenticated()){
+        return res.json({redirect: '/user/login'})
+    }
     let invoices = await Invoice.find()
     res.json(invoices)
 })

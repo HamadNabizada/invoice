@@ -3,6 +3,7 @@ import {getInvoices,createInvoice,updateInvoice,deleteInvoices,
     getFilteredInvoices, getSingleInvoice} from '../controllers/invoiceController.js'
 let router = express.Router()
 
+
 router.get('/', getInvoices)
 router.post('/', getFilteredInvoices)
 
