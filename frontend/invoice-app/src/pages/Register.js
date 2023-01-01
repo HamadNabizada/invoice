@@ -81,9 +81,9 @@ export default function Register(props){
         navigate('/user/login')
     }
     
-    let errorsElem = formErrors.map(item=>{
+    let errorsElem = formErrors.map((item,index)=>{
         return (
-            <h4>{item.error}</h4>
+            <h4 key={`errorStack${index}`} style={{color:'red'}}>{item.error}</h4>
         )
     })
     return(

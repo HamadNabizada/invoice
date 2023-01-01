@@ -5,9 +5,8 @@ import passport from 'passport'
 let router = express.Router()
 
 router.post('/register', registerUser)
-router.post('/login', passport.authenticate('local',{
-    successRedirect:'/',
-    failureRedirect:'http://localhost:3000/'
-}))
+router.post('/login',passport.authenticate('local'), loginUser)
 
 export default router
+
+

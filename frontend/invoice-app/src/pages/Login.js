@@ -2,7 +2,7 @@ import styles from '../styles/Login.module.css'
 import Nav from '../components/Nav'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import e from 'cors'
+
 
 export default function Login(props){
     let styleTheme = {
@@ -40,6 +40,7 @@ export default function Login(props){
         let attemptLogin = async ()=>{
             let apiCall = await fetch('http://localhost:8000/user/login/',{
                 method:'POST',
+                credentials: 'include',
                 headers:{
                     'Content-Type':'application/json'
                 },
