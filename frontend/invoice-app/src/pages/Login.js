@@ -34,6 +34,7 @@ export default function Login(props){
     let navigate = useNavigate()
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
+    let [message, setMessage] = useState({})
 
     function submitLogin(e){
         e.preventDefault()
@@ -48,6 +49,17 @@ export default function Login(props){
             })
             let data = await apiCall.json()
             console.log(data)
+            if(data.redirect){
+                navigate(data.redirect)
+            }
+            if(data.message === 'Success'){
+                setTimeout(() => {
+                    navigate('/')
+                }, 500);
+            }
+            if(data.message){
+                setMessage(data)
+            }
         }
         attemptLogin()
     }
@@ -64,7 +76,9 @@ export default function Login(props){
     function updatePassword(e){
         setPassword(e.target.value)
     }
-
+    let messageElem = (
+        <h4>{message.message}</h4>
+    )
     return(
         <div style={styleTheme.layout} className={styles.layout}>
             <Nav 
@@ -74,6 +88,7 @@ export default function Login(props){
             <section style={styleTheme.main} className={styles.loginContainer}>
                 <div style={styleTheme.subBG} className={styles.formWrapper}>
                     <h1 className={styles.formTitle}>Login</h1>
+                    {messageElem}
                     <form className={styles.formStyles} onSubmit={submitLogin}>
                         <div className={styles.labelInputWrapper}>
                             <label htmlFor="email">Email</label>

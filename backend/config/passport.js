@@ -9,7 +9,7 @@ export default function (passport){
             try {
                 let userFound = await User.findOne({'email':email})
                 if(!userFound){
-                    return done(null,false)
+                    return done(null,false,{message:'User not found'})
                 }
                 
                 bcrypt.compare(password, userFound.password, (err, res) => {
@@ -20,7 +20,7 @@ export default function (passport){
                       return done(null,userFound)
                     }
                     else{
-                        return done(null, false)
+                        return done(null, false,{message:'Incorrect password'})
                     }
                 });
             } catch (error) {

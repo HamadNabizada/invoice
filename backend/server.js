@@ -9,6 +9,7 @@ import passport from 'passport'
 import passportConfig from './config/passport.js'
 import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose'
+import flash from 'connect-flash'
 
 
 dotenv.config()
@@ -36,7 +37,7 @@ app.use(session({
     saveUninitialized:false
 }))
 
-
+app.use(flash())
 passportConfig(passport)
 app.use(passport.initialize())
 app.use(passport.session())
